@@ -44,7 +44,6 @@ public class PdfGenerator {
 
 	public void GenerateInvoicePdf(Invoice invoice) {
 		title += invoice.getUser().getName();
-		//filename = "factuur" + invoice.getUser().getName();
 		prijs = invoice.getTotalPrice();
 
 		vandatum = invoice.getStartDate();
@@ -161,12 +160,6 @@ public class PdfGenerator {
 		table.addCell(new Phrase(String.valueOf(prijs)));
 		table.setSpacingBefore(30f);
 		return table;
-
-//		List unorderedList = new List(List.UNORDERED);
-//		for (int i = 0; i < 10; i++) {
-//			unorderedList.add(new ListItem("Item " + i));
-//		}
-//		return unorderedList;
 	}
 
 	private void setMetadata() {
