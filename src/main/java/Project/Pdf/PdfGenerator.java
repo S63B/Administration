@@ -42,41 +42,6 @@ public class PdfGenerator {
 	private float imgWidth = 100f;
 	private float imgHeight = 66f;
 
-	public void GenerateInvoicePdf() {
-		vandatum = DateTime.parse("01.01.2017");
-		totdatum = DateTime.parse("31.01.2017");
-
-		userData.put("CarTracker", "123");
-		userData.put("Hardware", "123456");
-		userData.put("Identification Method", "GpsV01");
-		userData.put("Car category", "Old-Timer");
-
-		title += username;
-
-		document = new Document();
-		try
-		{
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename + ".pdf"));
-			document.open();
-			setMetadata();
-
-			createTitlePage();
-			//addContent();
-
-			document.close();
-			writer.close();
-		} catch (DocumentException e)
-		{
-			e.printStackTrace();
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void GenerateInvoicePdf(Invoice invoice) {
 		title += invoice.getUser().getName();
 		//filename = "factuur" + invoice.getUser().getName();
@@ -99,13 +64,14 @@ public class PdfGenerator {
 
 			createTitlePage();
 
+			addContent();
+
 			//Close document
 			document.close();
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void createTitlePage() throws DocumentException, IOException {
@@ -171,17 +137,36 @@ public class PdfGenerator {
 	}
 
 	private void addContent() throws DocumentException {
+		document.newPage();
 		document.add(new Paragraph("Ritten", subFont));
-		document.add(createList());
+		document.add(createRittenList());
 
 	}
 
-	private List createList() {
-		List unorderedList = new List(List.UNORDERED);
+	private PdfPTable createRittenList() throws DocumentException {
+		PdfPTable table = new PdfPTable(3);
+		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+		table.setWidthPercentage(100);
+		table.setWidths(new float[]{1, 1, 3});
+
+		//Loop through the rides
 		for (int i = 0; i < 10; i++) {
-			unorderedList.add(new ListItem("Item " + i));
+			table.addCell(new Phrase("Van datum"));
+			table.addCell(new Phrase("Tot datum"));
+			table.addCell(new Phrase("Aantal Km"));
 		}
-		return unorderedList;
+
+
+		table.addCell(new Phrase("Totaalprijs"));
+		table.addCell(new Phrase(String.valueOf(prijs)));
+		table.setSpacingBefore(30f);
+		return table;
+
+//		List unorderedList = new List(List.UNORDERED);
+//		for (int i = 0; i < 10; i++) {
+//			unorderedList.add(new ListItem("Item " + i));
+//		}
+//		return unorderedList;
 	}
 
 	private void setMetadata() {
