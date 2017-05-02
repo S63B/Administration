@@ -1,25 +1,19 @@
 package Project.Pdf;
 
-import Project.Domain.Invoice;
+import com.S63B.domain.Entities.Invoice;
 import com.itextpdf.text.*;
-import com.itextpdf.text.List;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.joda.time.DateTime;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.*;
 
-import static Project.Pdf.PdfFonts.catFont;
-import static Project.Pdf.PdfFonts.smallBold;
-import static Project.Pdf.PdfFonts.subFont;
+import static Project.Pdf.PdfFonts.*;
 
 /**
  * Created by Nekkyou on 4-4-2017.

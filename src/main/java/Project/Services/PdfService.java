@@ -1,8 +1,8 @@
 package Project.Services;
 
-import Project.Domain.Invoice;
-import Project.Domain.User;
 import Project.Pdf.PdfGenerator;
+import com.S63B.domain.Entities.Invoice;
+import com.S63B.domain.Entities.User;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
