@@ -19,11 +19,16 @@ public class PdfService {
 	public PdfService() {
 	}
 
+
 	@PostConstruct
 	private void init() {
 		this.generator = new PdfGenerator();
 	}
 
+	/**
+	 * createPdf
+	 * Creates a Pdf file, later on will need a user id to get the correct data.
+	 */
 	public void createPdf() {
 		//Dummy data
 		User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);

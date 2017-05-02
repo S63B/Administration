@@ -42,6 +42,10 @@ public class PdfGenerator {
 	private float imgWidth = 100f;
 	private float imgHeight = 66f;
 
+	/**
+	 * Generates a PDF from an Invoice.
+	 * @param invoice The invoice which contains the data for the PDF
+	 */
 	public void GenerateInvoicePdf(Invoice invoice) {
 		title += invoice.getUser().getName();
 		prijs = invoice.getTotalPrice();
@@ -62,7 +66,6 @@ public class PdfGenerator {
 			setMetadata();
 
 			createTitlePage();
-
 			addContent();
 
 			//Close document
@@ -73,8 +76,12 @@ public class PdfGenerator {
 		}
 	}
 
+	/**
+	 * Create the title page for the PDF
+	 * @throws DocumentException When there is a problem with the PdfDocument.
+	 * @throws IOException When there is a problem with IO.
+	 */
 	private void createTitlePage() throws DocumentException, IOException {
-		setPdfHeader();
 		document.add(new Paragraph(title, catFont));
 		document.add(new Paragraph("Created on: " + new Date().toString(), smallBold));
 
@@ -99,10 +106,10 @@ public class PdfGenerator {
 		document.add(img);
 	}
 
-	private void setPdfHeader() {
-
-	}
-
+	/**
+	 * Add the pricing information to the pdf.
+	 * @throws DocumentException
+	 */
 	private void addPricing() throws DocumentException {
 		PdfPTable table = new PdfPTable(2);
 		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
@@ -113,6 +120,10 @@ public class PdfGenerator {
 		document.add(table);
 	}
 
+	/**
+	 * Add the information from the user to the pdf.
+	 * @throws DocumentException
+	 */
 	private void createUserInfo() throws DocumentException {
 		Paragraph userInfo = new Paragraph("User info", smallBold);
 		userInfo.setSpacingBefore(30f);
@@ -135,6 +146,10 @@ public class PdfGenerator {
 		document.add(new Chunk(ls));
 	}
 
+	/**
+	 * Add content to the pdf after the title page.
+	 * @throws DocumentException
+	 */
 	private void addContent() throws DocumentException {
 		document.newPage();
 		document.add(new Paragraph("Ritten", subFont));
@@ -142,6 +157,11 @@ public class PdfGenerator {
 
 	}
 
+	/**
+	 * Creates a list of Rides and puts them in a table.
+	 * @return A table with the rides, each ride has a from and to date and the total amount of km driven.
+	 * @throws DocumentException
+	 */
 	private PdfPTable createRittenList() throws DocumentException {
 		PdfPTable table = new PdfPTable(3);
 		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
@@ -162,6 +182,9 @@ public class PdfGenerator {
 		return table;
 	}
 
+	/**
+	 * Set the meta data for the pdf document.
+	 */
 	private void setMetadata() {
 		//Attributes
 		document.addAuthor(author);

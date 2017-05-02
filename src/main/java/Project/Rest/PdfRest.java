@@ -36,6 +36,11 @@ public class PdfRest {
 	@Autowired
 	PdfService service;
 
+	/**
+	 * Create a pdf and downloads it.
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/pdf")
 	public ResponseEntity<InputStreamResource> downloadPDFFile()
 			throws IOException {
