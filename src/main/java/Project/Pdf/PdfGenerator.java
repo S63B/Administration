@@ -164,15 +164,19 @@ public class PdfGenerator {
 	 */
 	private PdfPTable createRittenList() throws DocumentException {
 		PdfPTable table = new PdfPTable(3);
-		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+		table.getDefaultCell().setBorder(PdfPCell.BOTTOM);
 		table.setWidthPercentage(100);
 		table.setWidths(new float[]{1, 1, 3});
 
+		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
+		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
+		table.addCell(new Phrase("Aantal Km", PdfFonts.smallBold));
+
 		//Loop through the rides
 		for (int i = 0; i < 10; i++) {
-			table.addCell(new Phrase("Van datum"));
-			table.addCell(new Phrase("Tot datum"));
-			table.addCell(new Phrase("Aantal Km"));
+			table.addCell(new Phrase(generateRandomdate().toString()));
+			table.addCell(new Phrase(generateRandomdate().toString()));
+			table.addCell(new Phrase(String.valueOf(generateRandomInt())));
 		}
 
 
@@ -180,6 +184,22 @@ public class PdfGenerator {
 		table.addCell(new Phrase(String.valueOf(prijs)));
 		table.setSpacingBefore(30f);
 		return table;
+	}
+
+	private LocalDate generateRandomdate() {
+		Random random = new Random();
+		int minDay = (int) LocalDate.of(1900, 1, 1).toEpochDay();
+		int maxDay = (int) LocalDate.of(2015, 1, 1).toEpochDay();
+		long randomDay = minDay + random.nextInt(maxDay - minDay);
+
+		LocalDate randomBirthDate = LocalDate.ofEpochDay(randomDay);
+
+		return randomBirthDate;
+	}
+
+	private int generateRandomInt() {
+		Random random = new Random();
+		return random.nextInt(100);
 	}
 
 	/**
