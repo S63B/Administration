@@ -153,7 +153,7 @@ public class PdfGenerator {
 	private void addContent() throws DocumentException {
 		document.newPage();
 		document.add(new Paragraph("Ritten", subFont));
-		document.add(createRittenList());
+		document.add(createRideList());
 
 	}
 
@@ -162,17 +162,23 @@ public class PdfGenerator {
 	 * @return A table with the rides, each ride has a from and to date and the total amount of km driven.
 	 * @throws DocumentException
 	 */
-	private PdfPTable createRittenList() throws DocumentException {
+	private PdfPTable createRideList() throws DocumentException {
+		//Create a table with 3 columns
 		PdfPTable table = new PdfPTable(3);
+
+		//Set the border of the table.
 		table.getDefaultCell().setBorder(PdfPCell.BOTTOM);
+		//Width of table
 		table.setWidthPercentage(100);
+		//split table columns width in 5, first part is 1/5, second part is 1/5 and third is 3/5.
 		table.setWidths(new float[]{1, 1, 3});
 
+		//Add the titles with the smallBold.
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Aantal Km", PdfFonts.smallBold));
 
-		//Loop through the rides
+		//Loop through the rides and add them to the table.
 		for (int i = 0; i < 10; i++) {
 			table.addCell(new Phrase(generateRandomdate().toString()));
 			table.addCell(new Phrase(generateRandomdate().toString()));
@@ -182,21 +188,30 @@ public class PdfGenerator {
 
 		table.addCell(new Phrase("Totaalprijs"));
 		table.addCell(new Phrase(String.valueOf(prijs)));
+		//Set space before the table to 30f.
 		table.setSpacingBefore(30f);
 		return table;
 	}
 
+	/**
+	 * Generate a random date for test data.
+	 * @return A Date between 1 January 1900 and today.
+	 */
 	private LocalDate generateRandomdate() {
 		Random random = new Random();
 		int minDay = (int) LocalDate.of(1900, 1, 1).toEpochDay();
-		int maxDay = (int) LocalDate.of(2015, 1, 1).toEpochDay();
+		int maxDay = (int) LocalDate.now().toEpochDay();
 		long randomDay = minDay + random.nextInt(maxDay - minDay);
 
-		LocalDate randomBirthDate = LocalDate.ofEpochDay(randomDay);
+		LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
 
-		return randomBirthDate;
+		return randomDate;
 	}
 
+	/**
+	 * Generate a random int between 0 and 100 for test data usage
+	 * @return A random int between 0 and 100
+	 */
 	private int generateRandomInt() {
 		Random random = new Random();
 		return random.nextInt(100);
