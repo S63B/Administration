@@ -1,8 +1,9 @@
 package Project.Services;
 
+import Project.DAO.UserDao;
 import Project.Pdf.PdfGenerator;
 import com.S63B.domain.Entities.Invoice;
-import com.S63B.domain.Entities.User;
+import com.S63B.domain.Entities.Owner;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import javax.annotation.PostConstruct;
 public class PdfService {
 
 	private PdfGenerator generator;
+	private UserDao userDao;
+
 
 	public PdfService() {
 	}
@@ -23,6 +26,7 @@ public class PdfService {
 	@PostConstruct
 	private void init() {
 		this.generator = new PdfGenerator();
+		this.userDao = new UserDao();
 	}
 
 	/**
@@ -31,8 +35,12 @@ public class PdfService {
 	 */
 	public void createPdf() {
 		//Dummy data
-		User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
-		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, new DateTime(), new DateTime(), 0, "NL");
+		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
+
+		Owner user = userDao.getUser("Tim");
+		DateTime fromDate = new DateTime();
+		fromDate.minusDays(2);
+		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, fromDate, new DateTime() , 0, "NL");
 
 		String fileName = "factuur.pdf";
 
