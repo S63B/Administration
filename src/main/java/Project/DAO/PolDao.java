@@ -59,7 +59,10 @@ public class PolDao extends BaseDao<Pol> {
 			for (Pol pol : pols){
 				if (!(lastPol == null || pol.getTimestampMillis() - lastPol.getTimestampMillis() < 300000)){
 					currentRide = updateRide(currentRide, licensePlate);
-					rides.add(currentRide);
+					if (currentRide.getPols().size() > 1) {
+						rides.add(currentRide);
+					}
+
 					currentRide = new Ride();
 				}
 
@@ -68,8 +71,9 @@ public class PolDao extends BaseDao<Pol> {
 			}
 
 			currentRide = updateRide(currentRide, licensePlate);
-			rides.add(currentRide);
-
+			if (currentRide.getPols().size() > 1) {
+				rides.add(currentRide);
+			}
 			return rides;
 		}catch (Exception e){
 			e.printStackTrace();

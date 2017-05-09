@@ -179,7 +179,7 @@ public class PdfGenerator {
 		//Add the titles with the smallBold.
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
-		table.addCell(new Phrase("Aantal Km", PdfFonts.smallBold));
+		table.addCell(new Phrase("Aantal Meter", PdfFonts.smallBold));
 
 
 		//Get each car from the owner
@@ -189,22 +189,23 @@ public class PdfGenerator {
 			cars.add(co.getCar());
 		}
 
+		//Go through each Car.
 		for (Car c : cars) {
 			LicensePlate lp = c.getLicensePlate();
-			List<Ride> rides = polDao.getRides(lp.getLicense(), vandatum.getMillis(), totdatum.getMillis());
+			//Get rides with license plate and loop through it and add each entry to a list.
+			long fromMillis = vandatum.getMillis();
+			long endMillis = totdatum.getMillis();
+
+			//Test data:
+			fromMillis = 1494322995347L;
+			endMillis = 1495322995347L;
+
+			List<Ride> rides = polDao.getRides(lp.getLicense(), fromMillis, endMillis);
 			for(Ride r: rides) {
-				table.addCell(new Phrase(r.getStartDate()));
-				table.addCell(new Phrase(r.getEndDate()));
-				table.addCell(new Phrase(r.getDistance()));
+				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("MM/dd/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("MM/dd/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(String.valueOf(r.getDistance())));
 			}
-		}
-
-
-		//Loop through the rides and add them to the table.
-		for (int i = 0; i < 10; i++) {
-			table.addCell(new Phrase(generateRandomdate().toString()));
-			table.addCell(new Phrase(generateRandomdate().toString()));
-			table.addCell(new Phrase(String.valueOf(generateRandomInt())));
 		}
 
 
@@ -215,29 +216,29 @@ public class PdfGenerator {
 		return table;
 	}
 
-	/**
-	 * Generate a random date for test data.
-	 * @return A Date between 1 January 1900 and today.
-	 */
-	private LocalDate generateRandomdate() {
-		Random random = new Random();
-		int minDay = (int) LocalDate.of(1900, 1, 1).toEpochDay();
-		int maxDay = (int) LocalDate.now().toEpochDay();
-		long randomDay = minDay + random.nextInt(maxDay - minDay);
-
-		LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
-
-		return randomDate;
-	}
-
-	/**
-	 * Generate a random int between 0 and 100 for test data usage
-	 * @return A random int between 0 and 100
-	 */
-	private int generateRandomInt() {
-		Random random = new Random();
-		return random.nextInt(100);
-	}
+//	/**
+//	 * Generate a random date for test data.
+//	 * @return A Date between 1 January 1900 and today.
+//	 */
+//	private LocalDate generateRandomdate() {
+//		Random random = new Random();
+//		int minDay = (int) LocalDate.of(1900, 1, 1).toEpochDay();
+//		int maxDay = (int) LocalDate.now().toEpochDay();
+//		long randomDay = minDay + random.nextInt(maxDay - minDay);
+//
+//		LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
+//
+//		return randomDate;
+//	}
+//
+//	/**
+//	 * Generate a random int between 0 and 100 for test data usage
+//	 * @return A random int between 0 and 100
+//	 */
+//	private int generateRandomInt() {
+//		Random random = new Random();
+//		return random.nextInt(100);
+//	}
 
 	/**
 	 * Set the meta data for the pdf document.

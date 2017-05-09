@@ -37,8 +37,10 @@ public class PdfService {
 		//Dummy data
 		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
 
-		Owner user = userDao.getUser("");
-		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, new DateTime(), new DateTime(), 0, "NL");
+		Owner user = userDao.getUser("Tim");
+		DateTime fromDate = new DateTime();
+		fromDate.minusDays(2);
+		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, fromDate, new DateTime() , 0, "NL");
 
 		String fileName = "factuur.pdf";
 
