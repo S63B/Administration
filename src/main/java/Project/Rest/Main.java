@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages={"Project"})
-public class Startup {
+public class Main {
 	public static void main(String[] args) {
-		SpringApplication.run(Startup.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 }
