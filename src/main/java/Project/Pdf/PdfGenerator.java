@@ -1,6 +1,8 @@
 package Project.Pdf;
 
-import com.S63B.domain.Entities.Invoice;
+import Project.DAO.PolDao;
+import com.S63B.domain.Entities.*;
+import com.S63B.domain.Ride;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -12,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 
 import static Project.Pdf.PdfFonts.*;
 
@@ -19,6 +22,8 @@ import static Project.Pdf.PdfFonts.*;
  * Created by Nekkyou on 4-4-2017.
  */
 public class PdfGenerator {
+	private PolDao polDao;
+
 	private Document document;
 	private String filename = "factuur";
 	private String author = "Overheid";
@@ -35,6 +40,10 @@ public class PdfGenerator {
 
 	private float imgWidth = 100f;
 	private float imgHeight = 66f;
+
+	public PdfGenerator() {
+		polDao = new PolDao();
+	}
 
 	/**
 	 * Generates a PDF from an Invoice.
@@ -60,7 +69,7 @@ public class PdfGenerator {
 			setMetadata();
 
 			createTitlePage();
-			addContent();
+			addContent(invoice.getUser());
 
 			//Close document
 			document.close();
@@ -144,10 +153,10 @@ public class PdfGenerator {
 	 * Add content to the pdf after the title page.
 	 * @throws DocumentException
 	 */
-	private void addContent() throws DocumentException {
+	private void addContent(Owner owner) throws DocumentException {
 		document.newPage();
 		document.add(new Paragraph("Ritten", subFont));
-		document.add(createRideList());
+		document.add(createRideList(owner));
 
 	}
 
@@ -156,7 +165,7 @@ public class PdfGenerator {
 	 * @return A table with the rides, each ride has a from and to date and the total amount of km driven.
 	 * @throws DocumentException
 	 */
-	private PdfPTable createRideList() throws DocumentException {
+	private PdfPTable createRideList(Owner owner) throws DocumentException {
 		//Create a table with 3 columns
 		PdfPTable table = new PdfPTable(3);
 
@@ -171,6 +180,25 @@ public class PdfGenerator {
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Aantal Km", PdfFonts.smallBold));
+
+
+		//Get each car from the owner
+		List<Car_Ownership> car_ownerships = owner.getOwnedCars();
+		ArrayList<Car> cars = new ArrayList<>();
+		for(Car_Ownership co : car_ownerships) {
+			cars.add(co.getCar());
+		}
+
+		for (Car c : cars) {
+			LicensePlate lp = c.getLicensePlate();
+			List<Ride> rides = polDao.getRides(lp.getLicense(), vandatum.getMillis(), totdatum.getMillis());
+			for(Ride r: rides) {
+				table.addCell(new Phrase(r.getStartDate()));
+				table.addCell(new Phrase(r.getEndDate()));
+				table.addCell(new Phrase(r.getDistance()));
+			}
+		}
+
 
 		//Loop through the rides and add them to the table.
 		for (int i = 0; i < 10; i++) {
