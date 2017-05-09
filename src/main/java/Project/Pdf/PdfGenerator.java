@@ -174,7 +174,7 @@ public class PdfGenerator {
 		//Width of table
 		table.setWidthPercentage(100);
 		//split table columns width in 5, first part is 1/5, second part is 1/5 and third is 3/5.
-		table.setWidths(new float[]{1, 1, 3});
+		table.setWidths(new float[]{2, 2, 1});
 
 		//Add the titles with the smallBold.
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
