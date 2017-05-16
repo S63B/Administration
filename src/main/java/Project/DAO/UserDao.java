@@ -26,4 +26,16 @@ public class UserDao extends BaseDao<Owner> {
 			return null;
 		}
 	}
+
+	public Owner getUserById(int id) {
+		try {
+			return em.find(Owner.class, id);
+		}catch(NoResultException e){
+			// No result is acceptable, object is null.
+			return null;
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

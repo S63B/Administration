@@ -49,7 +49,7 @@ public class PdfGenerator {
 	 * Generates a PDF from an Invoice.
 	 * @param invoice The invoice which contains the data for the PDF
 	 */
-	public void GenerateInvoicePdf(Invoice invoice) {
+	public String GenerateInvoicePdf(Invoice invoice) {
 		title += invoice.getUser().getName();
 		prijs = invoice.getTotalPrice();
 
@@ -60,6 +60,8 @@ public class PdfGenerator {
 		userData.put("Residence", invoice.getUser().getResidence());
 		userData.put("Role", invoice.getUser().getRole());
 		userData.put("Owned cars", String.valueOf((invoice.getUser().getOwnedCars().size())));
+
+		filename = invoice.getUser().getName();
 
 		document = new Document();
 		try
@@ -77,6 +79,12 @@ public class PdfGenerator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		//Reset data, for future use:
+		title = "Factuur voor ";
+		userData = new LinkedHashMap<>();
+
+		return filename + ".pdf";
 	}
 
 	/**

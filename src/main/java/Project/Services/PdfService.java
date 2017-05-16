@@ -33,18 +33,18 @@ public class PdfService {
 	 * createPdf
 	 * Creates a Pdf file, later on will need a user id to get the correct data.
 	 */
-	public void createPdf() {
-		//Dummy data
-		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
+	public String createPdf(int userId, long startDate, long endDate) {
+		Owner user = userDao.getUserById(userId);
 
-		Owner user = userDao.getUser("Tim");
-		DateTime fromDate = new DateTime();
-		fromDate.minusDays(2);
-		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, fromDate, new DateTime() , 0, "NL");
+		if (user == null) {
+			throw new NullPointerException("There does not exist a user with id: " + userId);
+		}
 
-		String fileName = "factuur.pdf";
+		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, new DateTime(startDate), new DateTime(endDate) , 0, "NL");
+		String filename = generator.GenerateInvoicePdf(invoice);
 
-		generator.GenerateInvoicePdf(invoice);
+		//Return the file name
+		return filename;
 	}
 
 
