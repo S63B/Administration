@@ -202,8 +202,8 @@ public class PdfGenerator {
 
 			List<Ride> rides = polDao.getRides(lp.getLicense(), fromMillis, endMillis);
 			for(Ride r: rides) {
-				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("MM/dd/yyyy HH:mm:ss")));
-				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("MM/dd/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("dd/MM/  yyyy HH:mm")));
+				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("dd/MM/yyyy HH:mm")));
 				table.addCell(new Phrase(String.valueOf(r.getDistance())));
 			}
 		}

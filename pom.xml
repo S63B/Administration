@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.github.S63B</groupId>
             <artifactId>Domain</artifactId>
-            <version>00c8a89419</version>
+            <version>e0f1c64827</version>
         </dependency>
 
         <dependency>
