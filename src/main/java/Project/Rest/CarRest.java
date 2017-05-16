@@ -39,8 +39,8 @@ public class CarRest {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Car> getCarById(@PathVariable("id") int licensePlate){
-        Car foundCar = carService.getCarById(licensePlate);
+    public ResponseEntity<Car> getCarById(@PathVariable("id") int id){
+        Car foundCar = carService.getCarById(id);
         HttpStatus status = HttpStatus.OK;
 
         if (foundCar == null) {
