@@ -8,6 +8,7 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Nekkyou on 9-5-2017.
  */
+@Repository
 public class PolDao extends BaseDao<Pol> {
 
 	public boolean deletePols(String licensePlate){
