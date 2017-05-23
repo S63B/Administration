@@ -35,7 +35,11 @@ public class CarService {
         return allCars;
     }
 
-    public Car getCarById(int licensePlate){
-       return carDao.findOne(licensePlate);
+    public Car getCarById(int id){
+       return carDao.findOne(id);
+    }
+
+    private Car updateCar(Car car){
+        return carDao.save(car);
     }
 }

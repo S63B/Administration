@@ -1,6 +1,6 @@
 package Project.DAO;
 
-import com.S63B.domain.Entities.Owner;
+import com.S63B.domain.Entities.Rate;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
  * Created by Kevin.
  */
 @Repository
-public interface OwnerDao  extends CrudRepository<Owner, Integer> {
-
+public interface RateDao extends CrudRepository<Rate, Integer> {
 }

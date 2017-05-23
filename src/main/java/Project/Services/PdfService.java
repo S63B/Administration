@@ -1,13 +1,13 @@
 package Project.Services;
 
-import Project.DAO.UserDao;
+import Project.DAO.OwnerDao;
 import Project.Pdf.PdfGenerator;
 import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 
 /**
  * Created by Nekkyou on 18-4-2017.
@@ -16,17 +16,16 @@ import javax.annotation.PostConstruct;
 public class PdfService {
 
 	private PdfGenerator generator;
-	private UserDao userDao;
+	private OwnerDao ownerDao;
 
 
 	public PdfService() {
 	}
 
-
-	@PostConstruct
-	private void init() {
+	@Autowired
+	private void PdfService(OwnerDao ownerDao) {
 		this.generator = new PdfGenerator();
-		this.userDao = new UserDao();
+		this.ownerDao = ownerDao;
 	}
 
 	/**
@@ -37,7 +36,7 @@ public class PdfService {
 		//Dummy data
 		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
 
-		Owner user = userDao.getUser("Tim");
+		Owner user = ownerDao.findOne(1);
 		DateTime fromDate = new DateTime();
 		fromDate.minusDays(2);
 		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, fromDate, new DateTime() , 0, "NL");

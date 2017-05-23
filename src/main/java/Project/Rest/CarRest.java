@@ -32,7 +32,7 @@ public class CarRest {
         HttpStatus status = HttpStatus.OK;
 
         if (allCars.isEmpty()) {
-            status = HttpStatus.NOT_FOUND;
+            status = HttpStatus.NO_CONTENT;
         }
 
         return new ResponseEntity<>(allCars, status);
