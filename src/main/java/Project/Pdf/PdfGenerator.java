@@ -50,16 +50,16 @@ public class PdfGenerator {
 	 * @param invoice The invoice which contains the data for the PDF
 	 */
 	public void GenerateInvoicePdf(Invoice invoice) {
-		title += invoice.getUser().getName();
+		title += invoice.getOwner().getName();
 		prijs = invoice.getTotalPrice();
 
 		vandatum = invoice.getStartDate();
 		totdatum = invoice.getEndDate();
 
-		userData.put("Address", invoice.getUser().getAddress());
-		userData.put("Residence", invoice.getUser().getResidence());
-		userData.put("Role", invoice.getUser().getRole());
-		userData.put("Owned cars", String.valueOf((invoice.getUser().getOwnedCars().size())));
+		userData.put("Address", invoice.getOwner().getAddress());
+		userData.put("Residence", invoice.getOwner().getResidence());
+		userData.put("Role", invoice.getOwner().getRole());
+		userData.put("Owned cars", String.valueOf((invoice.getOwner().getOwnedCars().size())));
 
 		document = new Document();
 		try
@@ -69,7 +69,7 @@ public class PdfGenerator {
 			setMetadata();
 
 			createTitlePage();
-			addContent(invoice.getUser());
+			addContent(invoice.getOwner());
 
 			//Close document
 			document.close();

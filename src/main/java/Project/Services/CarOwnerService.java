@@ -27,8 +27,8 @@ public class CarOwnerService {
         this.carService = carService;
     }
 
-    public List<Car> getCarsByOwner(Owner user) {
-        List<Car_Ownership> ownerships = carOwnerDao.getAllByUser(user);
+    public List<Car> getCarsByOwner(Owner owner) {
+        List<Car_Ownership> ownerships = carOwnerDao.getAllByOwner(owner);
         List<Car> cars = new ArrayList<>();
 
         for (Car_Ownership ownership : ownerships) {

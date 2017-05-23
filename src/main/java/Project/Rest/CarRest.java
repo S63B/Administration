@@ -49,5 +49,4 @@ public class CarRest {
 
         return new ResponseEntity<>(foundCar, status);
     }
-
 }

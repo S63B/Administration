@@ -12,5 +12,5 @@ import java.util.List;
  */
 @Repository
 public interface CarOwnerDao extends CrudRepository<Car_Ownership, Integer> {
-    List<Car_Ownership> getAllByUser(Owner user);
+    List<Car_Ownership> getAllByOwner(Owner owner);
 }
