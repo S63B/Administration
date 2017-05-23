@@ -90,8 +90,8 @@ public class PdfGenerator {
 		document.add(new Paragraph(title, catFont));
 		document.add(new Paragraph("Created on: " + new Date().toString(), smallBold));
 
-		document.add(new Paragraph("Van: " + vandatum.toString(), smallBold));
-		document.add(new Paragraph("Tot: " + totdatum.toString(), smallBold));
+		document.add(new Paragraph("Van: " + vandatum.toString("MM/dd/yyyy"), smallBold));
+		document.add(new Paragraph("Tot: " + totdatum.toString("MM/dd/yyyy"), smallBold));
 		createUserInfo();
 
 		addPricing();
@@ -197,10 +197,6 @@ public class PdfGenerator {
 			//Get rides with license plate and loop through it and add each entry to a list.
 			long fromMillis = vandatum.getMillis();
 			long endMillis = totdatum.getMillis();
-
-			//Test data:
-			fromMillis = 1494322995347L;
-			endMillis = 1495322995347L;
 
 			List<Ride> rides = polDao.getRides(lp.getLicense(), fromMillis, endMillis);
 			for(Ride r: rides) {
