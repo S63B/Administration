@@ -120,7 +120,7 @@ public class PdfGenerator {
 		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
 		table.setWidthPercentage(100);
 		table.addCell(new Phrase("Totaalprijs"));
-		table.addCell(new Phrase(String.valueOf(prijs)));
+		table.addCell(new Phrase("€" + String.valueOf(prijs)));
 		table.setSpacingBefore(30f);
 		document.add(table);
 	}
@@ -207,10 +207,6 @@ public class PdfGenerator {
 				table.addCell(new Phrase(String.valueOf(r.getDistance())));
 			}
 		}
-
-
-		table.addCell(new Phrase("Totaalprijs"));
-		table.addCell(new Phrase(String.valueOf(prijs)));
 		//Set space before the table to 30f.
 		table.setSpacingBefore(30f);
 		return table;
