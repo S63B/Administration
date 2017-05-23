@@ -15,37 +15,35 @@ import org.springframework.stereotype.Service;
 @Service("pdfService")
 public class PdfService {
 
-	private PdfGenerator generator;
-	private OwnerDao ownerDao;
+    private PdfGenerator generator;
+    private OwnerDao ownerDao;
 
 
-	public PdfService() {
-	}
+    public PdfService() {
+    }
 
-	@Autowired
-	private void PdfService(OwnerDao ownerDao) {
-		this.generator = new PdfGenerator();
-		this.ownerDao = ownerDao;
-	}
+    @Autowired
+    private void PdfService(OwnerDao ownerDao) {
+        this.generator = new PdfGenerator();
+        this.ownerDao = ownerDao;
+    }
 
-	/**
-	 * createPdf
-	 * Creates a Pdf file, later on will need a user id to get the correct data.
-	 */
-	public String createPdf(int id, long fromdate, long endDate) {
-		//Dummy data
-		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
+    /**
+     * createPdf
+     * Creates a Pdf file, later on will need a user id to get the correct data.
+     */
+    public String createPdf(int id, long fromdate, long endDate) {
+        //Dummy data
+        //User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
 
-		Owner user = ownerDao.findOne(1);
-		DateTime fromDate = new DateTime();
-		fromDate.minusDays(2);
-		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, fromDate, new DateTime() , 0, "NL");
+        Owner user = ownerDao.findOne(1);
+        DateTime fromDate = new DateTime();
+        fromDate.minusDays(2);
+        Invoice invoice = new Invoice(user, new DateTime(), 200.12, fromDate, new DateTime(), 0, "NL");
 
-		String fileName = "factuur.pdf";
+        String fileName = "factuur.pdf";
 
-		generator.GenerateInvoicePdf(invoice);
-		return fileName;
-	}
-
-
+        generator.GenerateInvoicePdf(invoice);
+        return fileName;
+    }
 }

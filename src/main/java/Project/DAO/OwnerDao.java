@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OwnerDao  extends CrudRepository<Owner, Integer> {
-
+    Owner findByUsername(String username);
 }
