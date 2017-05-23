@@ -33,7 +33,7 @@ public class InvoiceService {
 	}
 
 	public Invoice createInvoice(Owner owner, double price, DateTime startDate, DateTime endDate, String countryOfOrigin) {
-		Invoice invoice = new Invoice(1, owner, new DateTime(), price, startDate, endDate, 0, countryOfOrigin);
+		Invoice invoice = new Invoice(owner, new DateTime(), price, startDate, endDate, 0, countryOfOrigin);
 		invoiceDao.save(invoice);
 
 		return invoice;
