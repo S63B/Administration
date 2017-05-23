@@ -53,11 +53,17 @@ public class PdfRest {
 	}
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/pdf")
-	public ResponseEntity<InputStreamResource> downloadPDFFileById(@RequestParam("file") String fileName)
+	public ResponseEntity<InputStreamResource> downloadPDFFileById(@RequestParam("id") int invoiceId)
 			throws IOException {
-		fileName += ".pdf";
-
+		String fileName = String.valueOf(invoiceId) + ".pdf";
 		FileSystemResource resource = new FileSystemResource(fileName);
+
+		if (!resource.exists()) {
+			service.createPdfFromInvoiceId(invoiceId);
+			resource = new FileSystemResource(fileName);
+		}
+
+
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_PDF);

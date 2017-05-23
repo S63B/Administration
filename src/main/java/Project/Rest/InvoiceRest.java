@@ -6,10 +6,7 @@ import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -19,6 +16,7 @@ import java.util.List;
  */
 @RestController
 @Controller
+@CrossOrigin(origins = "*")
 public class InvoiceRest {
 
 	private OwnerService ownerService;
