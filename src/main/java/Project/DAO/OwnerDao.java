@@ -9,15 +9,15 @@ import java.util.ArrayList;
 /**
  * Created by Nekkyou on 9-5-2017.
  */
-public class UserDao extends BaseDao<Owner> {
+public class OwnerDao extends BaseDao<Owner> {
 	/**
 	 * Return a user with a name. Replace this with a NamedQuery later on
-	 * @param name the name of the user
+	 * @param username the username of the user
 	 * @return the user object with the same name as the parameter.
 	 */
-	public Owner getUser(String name) {
+	public Owner getOwner(String username) {
 		try {
-			return em.createNamedQuery("Owner.getOwner", Owner.class).setParameter("name", name).getSingleResult();
+			return em.createNamedQuery("Owner.getByUsername", Owner.class).setParameter("username", username).getSingleResult();
 		}catch(NoResultException e){
 			// No result is acceptable, object is null.
 			return null;
