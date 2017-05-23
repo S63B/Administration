@@ -1,6 +1,6 @@
 package Project.Services;
 
-import Project.DAO.UserDao;
+import Project.DAO.OwnerDao;
 import Project.Pdf.PdfGenerator;
 import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 public class PdfService {
 
 	private PdfGenerator generator;
-	private UserDao userDao;
+	private OwnerDao ownerDao;
 
 
 	public PdfService() {
@@ -26,7 +26,7 @@ public class PdfService {
 	@PostConstruct
 	private void init() {
 		this.generator = new PdfGenerator();
-		this.userDao = new UserDao();
+		this.ownerDao = new OwnerDao();
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class PdfService {
 	 * Creates a Pdf file, later on will need a user id to get the correct data.
 	 */
 	public String createPdf(int userId, long startDate, long endDate) {
-		Owner user = userDao.getUserById(userId);
+		Owner user = ownerDao.getUserById(userId);
 
 		if (user == null) {
 			throw new NullPointerException("There does not exist a user with id: " + userId);
