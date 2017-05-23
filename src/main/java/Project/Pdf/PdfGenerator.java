@@ -88,10 +88,10 @@ public class PdfGenerator {
 	 */
 	private void createTitlePage() throws DocumentException, IOException {
 		document.add(new Paragraph(title, catFont));
-		document.add(new Paragraph("Created on: " + new Date().toString(), smallBold));
+		document.add(new Paragraph("Created on: " + new DateTime().toString("dd/MM/yyyy"), smallBold));
 
-		document.add(new Paragraph("Van: " + vandatum.toString("MM/dd/yyyy"), smallBold));
-		document.add(new Paragraph("Tot: " + totdatum.toString("MM/dd/yyyy"), smallBold));
+		document.add(new Paragraph("Van: " + vandatum.toString("dd/MM/yyyy"), smallBold));
+		document.add(new Paragraph("Tot: " + totdatum.toString("dd/MM/yyyy"), smallBold));
 		createUserInfo();
 
 		addPricing();
@@ -120,7 +120,7 @@ public class PdfGenerator {
 		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
 		table.setWidthPercentage(100);
 		table.addCell(new Phrase("Totaalprijs"));
-		table.addCell(new Phrase(String.valueOf(prijs)));
+		table.addCell(new Phrase("€" + String.valueOf(prijs)));
 		table.setSpacingBefore(30f);
 		document.add(table);
 	}
@@ -169,16 +169,17 @@ public class PdfGenerator {
 	 */
 	private PdfPTable createRideList(Owner owner) throws DocumentException {
 		//Create a table with 3 columns
-		PdfPTable table = new PdfPTable(3);
+		PdfPTable table = new PdfPTable(4);
 
 		//Set the border of the table.
 		table.getDefaultCell().setBorder(PdfPCell.BOTTOM);
 		//Width of table
 		table.setWidthPercentage(100);
 		//split table columns width in 5, first part is 1/5, second part is 1/5 and third is 3/5.
-		table.setWidths(new float[]{2, 2, 1});
+		table.setWidths(new float[]{1, 2, 2, 1});
 
 		//Add the titles with the smallBold.
+		table.addCell(new Phrase("Auto", PdfFonts.smallBold));
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Aantal Meter", PdfFonts.smallBold));
@@ -200,15 +201,12 @@ public class PdfGenerator {
 
 			List<Ride> rides = polDao.getRides(lp.getLicense(), fromMillis, endMillis);
 			for(Ride r: rides) {
-				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("MM/dd/yyyy HH:mm:ss")));
-				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("MM/dd/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(c.getLicensePlate().getLicense()));
+				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("dd/MM/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("dd/MM/yyyy HH:mm:ss")));
 				table.addCell(new Phrase(String.valueOf(r.getDistance())));
 			}
 		}
-
-
-		table.addCell(new Phrase("Totaalprijs"));
-		table.addCell(new Phrase(String.valueOf(prijs)));
 		//Set space before the table to 30f.
 		table.setSpacingBefore(30f);
 		return table;
