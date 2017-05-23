@@ -37,7 +37,7 @@ public class InvoiceRest {
 											@RequestParam(value = "end_date") long endDate) {
 		List<Invoice> invoices = invoiceService.getInvoicesBetweenDate(userId, startDate, endDate);
 
-		return null;
+		return Response.ok().entity(invoices).build();
 	}
 
 	@RequestMapping(value = "/invoices", method = RequestMethod.GET)
