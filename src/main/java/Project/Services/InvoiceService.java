@@ -2,6 +2,8 @@ package Project.Services;
 
 import Project.DAO.InvoiceDao;
 import com.S63B.domain.Entities.Invoice;
+import com.S63B.domain.Entities.Owner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,9 +17,9 @@ public class InvoiceService {
 
 	private InvoiceDao invoiceDao;
 
-	@PostConstruct
-	private void init() {
-		invoiceDao = new InvoiceDao();
+	@Autowired
+	private void InvoiceService(InvoiceDao invoiceDao) {
+		this.invoiceDao = invoiceDao;
 	}
 
 	public List<Invoice> getInvoicesBetweenDate(String userId, long startDate, long endDate) {
@@ -25,7 +27,7 @@ public class InvoiceService {
 	}
 
 
-	public List<Invoice> getInvoicesFromUser(int userId) {
-		return invoiceDao.getInvoicesFromUser(userId);
+	public List<Invoice> getInvoicesFromOwner(Owner owner) {
+		return invoiceDao.getByOwner(owner);
 	}
 }

@@ -1,7 +1,9 @@
 package Project.Rest;
 
 import Project.Services.InvoiceService;
+import Project.Services.OwnerService;
 import com.S63B.domain.Entities.Invoice;
+import com.S63B.domain.Entities.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,15 @@ import java.util.List;
 @Controller
 public class InvoiceRest {
 
+	private OwnerService ownerService;
+	private final InvoiceService invoiceService;
+
 	@Autowired
-	private InvoiceService invoiceService;
+	public InvoiceRest(InvoiceService invoiceService, OwnerService ownerService) {
+		this.invoiceService = invoiceService;
+		this.ownerService = ownerService;
+	}
+
 
 	@RequestMapping(value = "/invoice", method = RequestMethod.GET)
 	public Response getInvoicesBetweenDates(@RequestParam(value = "user") String userId,
@@ -33,7 +42,9 @@ public class InvoiceRest {
 
 	@RequestMapping(value = "/invoices", method = RequestMethod.GET)
 	public Response getInvoicesBetweenDates(@RequestParam(value = "user") int userId) {
-		List<Invoice> invoices = invoiceService.getInvoicesFromUser(userId);
+
+		Owner foundOwner = ownerService.getOwner(userId);
+		List<Invoice> invoices = invoiceService.getInvoicesFromOwner(foundOwner);
 
 		return Response.ok().entity(invoices).build();
 	}

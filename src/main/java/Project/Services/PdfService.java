@@ -32,7 +32,7 @@ public class PdfService {
 	 * createPdf
 	 * Creates a Pdf file, later on will need a user id to get the correct data.
 	 */
-	public void createPdf() {
+	public String createPdf(int id, long fromdate, long endDate) {
 		//Dummy data
 		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
 
@@ -44,6 +44,7 @@ public class PdfService {
 		String fileName = "factuur.pdf";
 
 		generator.GenerateInvoicePdf(invoice);
+		return fileName;
 	}
 
 
