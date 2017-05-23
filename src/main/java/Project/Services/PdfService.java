@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 
 /**
  * Created by Nekkyou on 18-4-2017.
@@ -16,35 +18,41 @@ import org.springframework.stereotype.Service;
 public class PdfService {
 
 	private PdfGenerator generator;
-	private OwnerDao ownerDao;
+	private OwnerService ownerService;
+	private InvoiceService invoiceService;
 
 
 	public PdfService() {
 	}
 
 	@Autowired
-	private void PdfService(OwnerDao ownerDao) {
+	private void PdfService(OwnerService ownerService, InvoiceService invoiceService) {
 		this.generator = new PdfGenerator();
-		this.ownerDao = ownerDao;
+		this.ownerService = ownerService;
+		this.invoiceService = invoiceService;
 	}
 
 	/**
 	 * createPdf
 	 * Creates a Pdf file, later on will need a user id to get the correct data.
 	 */
-	public String createPdf(int id, long fromdate, long endDate) {
-		//Dummy data
-		//User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
+	public String createPdf(int id, long fromdate, long enddate) {
+		Owner owner = ownerService.getOwner(id);
 
-		Owner user = ownerDao.findOne(1);
-		DateTime fromDate = new DateTime();
-		fromDate.minusDays(2);
-		Invoice invoice = new Invoice(1, user, new DateTime(), 200.12, fromDate, new DateTime() , 0, "NL");
+		DateTime fromDate = new DateTime(fromdate);
+		DateTime endDate = new DateTime(enddate);
+		//TODO change when domain has changed.
+		//Invoice invoice = new Invoice(1, owner, new DateTime(), 200.12, fromDate, endDate, 0, "NL");
+		Invoice invoice = invoiceService.createInvoice(owner, 200.12, fromDate, endDate, "NL");
+		return generator.GenerateInvoicePdf(invoice);
+	}
 
-		String fileName = "factuur.pdf";
+	public void createPdfFromInvoiceId(int id) {
+		Invoice invoice = invoiceService.getInvoiceById(id);
+		if (invoice != null) {
+			generator.GenerateInvoicePdf(invoice);
+		}
 
-		generator.GenerateInvoicePdf(invoice);
-		return fileName;
 	}
 
 

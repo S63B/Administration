@@ -3,6 +3,7 @@ package Project.Services;
 import Project.DAO.InvoiceDao;
 import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +31,17 @@ public class InvoiceService {
 	public List<Invoice> getInvoicesFromOwner(Owner owner) {
 		return invoiceDao.getByOwner(owner);
 	}
+
+	public Invoice createInvoice(Owner owner, double price, DateTime startDate, DateTime endDate, String countryOfOrigin) {
+		Invoice invoice = new Invoice(1, owner, new DateTime(), price, startDate, endDate, 0, countryOfOrigin);
+		invoiceDao.save(invoice);
+
+		return invoice;
+	}
+
+	public Invoice getInvoiceById(int id) {
+		return invoiceDao.findOne(id);
+	}
+
+
 }
