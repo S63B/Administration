@@ -18,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/owner")
+@CrossOrigin(origins = "*")
 public class OwnerRest {
     private OwnerService ownerService;
 
