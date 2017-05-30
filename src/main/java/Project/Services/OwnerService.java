@@ -47,7 +47,6 @@ public class OwnerService {
     public Owner createOwner(Owner owner) {
         Owner returnOwner = null;
         if (ownerDao.findByUsername(owner.getUsername()) == null) {
-            owner = new Owner();
             returnOwner = ownerDao.save(owner);
         }
         return returnOwner;
