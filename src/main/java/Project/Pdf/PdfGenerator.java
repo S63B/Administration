@@ -25,17 +25,12 @@ public class PdfGenerator {
 	private PolDao polDao;
 
 	private Document document;
-	private String filename = "factuur";
-	private String author = "Overheid";
-	private String creator = "FBI";
-	private String title = "Factuur voor ";
-	private String subject = "Set the subject here";
+	private String filename = "";
+	private String title;
 	private DateTime vandatum;
 	private DateTime totdatum;
-	private String land = "Nederland";
-	private String username = "Tim Daniëls";
-	private double prijs = 50.12;
-	private String imagePath = "vlag.png";
+	private double prijs;
+	private String imagePath;
 	private Map<String, String> userData = new LinkedHashMap<>();
 
 	private float imgWidth = 100f;
@@ -49,27 +44,31 @@ public class PdfGenerator {
 	 * Generates a PDF from an Invoice.
 	 * @param invoice The invoice which contains the data for the PDF
 	 */
-	public void GenerateInvoicePdf(Invoice invoice) {
-		title += invoice.getUser().getName();
+	public String GenerateInvoicePdf(Invoice invoice) {
+		filename = String.valueOf(invoice.getId()) + ".pdf";
+
+
+		title = "Factuur voor " + invoice.getOwner().getName();
 		prijs = invoice.getTotalPrice();
+		imagePath = invoice.getCountryOfOrigin() + ".png";
 
 		vandatum = invoice.getStartDate();
 		totdatum = invoice.getEndDate();
 
-		userData.put("Address", invoice.getUser().getAddress());
-		userData.put("Residence", invoice.getUser().getResidence());
-		userData.put("Role", invoice.getUser().getRole());
-		userData.put("Owned cars", String.valueOf((invoice.getUser().getOwnedCars().size())));
+		userData.put("Adres", invoice.getOwner().getAddress());
+		userData.put("Woonplaats", invoice.getOwner().getResidence());
+		userData.put("Rol", invoice.getOwner().getRole());
+		userData.put("Auto's", String.valueOf((invoice.getOwner().getOwnedCars().size())));
 
 		document = new Document();
 		try
 		{
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename + ".pdf"));
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename));
 			document.open();
 			setMetadata();
 
 			createTitlePage();
-			addContent(invoice.getUser());
+			addContent(invoice.getOwner());
 
 			//Close document
 			document.close();
@@ -77,6 +76,9 @@ public class PdfGenerator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+
+		return filename;
 	}
 
 	/**
@@ -86,10 +88,10 @@ public class PdfGenerator {
 	 */
 	private void createTitlePage() throws DocumentException, IOException {
 		document.add(new Paragraph(title, catFont));
-		document.add(new Paragraph("Created on: " + new Date().toString(), smallBold));
+		document.add(new Paragraph("Created on: " + new DateTime().toString("dd/MM/yyyy"), smallBold));
 
-		document.add(new Paragraph("Van: " + vandatum.toString(), smallBold));
-		document.add(new Paragraph("Tot: " + totdatum.toString(), smallBold));
+		document.add(new Paragraph("Van: " + vandatum.toString("dd/MM/yyyy"), smallBold));
+		document.add(new Paragraph("Tot: " + totdatum.toString("dd/MM/yyyy"), smallBold));
 		createUserInfo();
 
 		addPricing();
@@ -118,7 +120,7 @@ public class PdfGenerator {
 		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
 		table.setWidthPercentage(100);
 		table.addCell(new Phrase("Totaalprijs"));
-		table.addCell(new Phrase(String.valueOf(prijs)));
+		table.addCell(new Phrase("€" + String.valueOf(prijs)));
 		table.setSpacingBefore(30f);
 		document.add(table);
 	}
@@ -167,16 +169,17 @@ public class PdfGenerator {
 	 */
 	private PdfPTable createRideList(Owner owner) throws DocumentException {
 		//Create a table with 3 columns
-		PdfPTable table = new PdfPTable(3);
+		PdfPTable table = new PdfPTable(4);
 
 		//Set the border of the table.
 		table.getDefaultCell().setBorder(PdfPCell.BOTTOM);
 		//Width of table
 		table.setWidthPercentage(100);
 		//split table columns width in 5, first part is 1/5, second part is 1/5 and third is 3/5.
-		table.setWidths(new float[]{2, 2, 1});
+		table.setWidths(new float[]{1, 2, 2, 1});
 
 		//Add the titles with the smallBold.
+		table.addCell(new Phrase("Auto", PdfFonts.smallBold));
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Aantal Meter", PdfFonts.smallBold));
@@ -196,59 +199,28 @@ public class PdfGenerator {
 			long fromMillis = vandatum.getMillis();
 			long endMillis = totdatum.getMillis();
 
-			//Test data:
-			fromMillis = 1494322995347L;
-			endMillis = 1495322995347L;
-
 			List<Ride> rides = polDao.getRides(lp.getLicense(), fromMillis, endMillis);
 			for(Ride r: rides) {
-				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("MM/dd/yyyy HH:mm:ss")));
-				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("MM/dd/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(c.getLicensePlate().getLicense()));
+				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("dd/MM/yyyy HH:mm:ss")));
+				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("dd/MM/yyyy HH:mm:ss")));
 				table.addCell(new Phrase(String.valueOf(r.getDistance())));
 			}
 		}
-
-
-		table.addCell(new Phrase("Totaalprijs"));
-		table.addCell(new Phrase(String.valueOf(prijs)));
 		//Set space before the table to 30f.
 		table.setSpacingBefore(30f);
 		return table;
 	}
-
-//	/**
-//	 * Generate a random date for test data.
-//	 * @return A Date between 1 January 1900 and today.
-//	 */
-//	private LocalDate generateRandomdate() {
-//		Random random = new Random();
-//		int minDay = (int) LocalDate.of(1900, 1, 1).toEpochDay();
-//		int maxDay = (int) LocalDate.now().toEpochDay();
-//		long randomDay = minDay + random.nextInt(maxDay - minDay);
-//
-//		LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
-//
-//		return randomDate;
-//	}
-//
-//	/**
-//	 * Generate a random int between 0 and 100 for test data usage
-//	 * @return A random int between 0 and 100
-//	 */
-//	private int generateRandomInt() {
-//		Random random = new Random();
-//		return random.nextInt(100);
-//	}
 
 	/**
 	 * Set the meta data for the pdf document.
 	 */
 	private void setMetadata() {
 		//Attributes
-		document.addAuthor(author);
+		document.addAuthor("Administration application");
 		document.addCreationDate();
-		document.addCreator(creator);
-		document.addTitle(title);
-		document.addSubject(subject);
+		document.addCreator("Administration application");
+		document.addTitle("Factuur");
+		document.addSubject("Factuur");
 	}
 }

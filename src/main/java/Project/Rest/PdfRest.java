@@ -8,9 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -18,8 +16,8 @@ import java.io.IOException;
  * Created by Nekkyou on 4-4-2017.
  */
 @RestController
-@RequestMapping("/pdf")
 @Controller
+@CrossOrigin(origins = "*")
 public class PdfRest {
 
 	@Autowired
@@ -30,18 +28,47 @@ public class PdfRest {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/pdf")
-	public ResponseEntity<InputStreamResource> downloadPDFFile()
+	@RequestMapping(value = "/pdf", method = RequestMethod.GET, produces = "application/pdf")
+	public ResponseEntity<InputStreamResource> downloadPDFFile(@RequestParam("user") int id,
+															   @RequestParam("start_date") long startDate,
+															   @RequestParam("end_date") long endDate)
 			throws IOException {
 
-		service.createPdf();
+		String filename = service.createPdf(id, startDate, endDate);
 
-		FileSystemResource resource = new FileSystemResource("factuur.pdf");
+		FileSystemResource resource = new FileSystemResource(filename);
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_PDF);
 		header.set(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=factuur.pdf");
+				"attachment; filename=" + filename);
+
+		return ResponseEntity
+				.ok()
+				.contentLength(resource.contentLength())
+				.headers(header)
+				.contentType(
+						MediaType.parseMediaType("application/octet-stream"))
+				.body(new InputStreamResource(resource.getInputStream()));
+	}
+
+	@RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/pdf")
+	public ResponseEntity<InputStreamResource> downloadPDFFileById(@RequestParam("id") int invoiceId)
+			throws IOException {
+		String fileName = String.valueOf(invoiceId) + ".pdf";
+		FileSystemResource resource = new FileSystemResource(fileName);
+
+		if (!resource.exists()) {
+			service.createPdfFromInvoiceId(invoiceId);
+			resource = new FileSystemResource(fileName);
+		}
+
+
+
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_PDF);
+		header.set(HttpHeaders.CONTENT_DISPOSITION,
+				"attachment; filename=" + fileName);
 
 		return ResponseEntity
 				.ok()

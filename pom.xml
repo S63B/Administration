@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.github.S63B</groupId>
             <artifactId>Domain</artifactId>
-            <version>00c8a89419</version>
+            <version>96af49d23b</version>
         </dependency>
 
         <dependency>
@@ -89,6 +89,24 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.5.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>21.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
