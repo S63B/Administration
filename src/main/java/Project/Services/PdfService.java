@@ -17,15 +17,17 @@ public class PdfService {
 
     private PdfGenerator generator;
     private OwnerDao ownerDao;
+    private InvoiceService invoiceService;
 
 
     public PdfService() {
     }
 
     @Autowired
-    private void PdfService(OwnerDao ownerDao) {
+    private void PdfService(OwnerDao ownerDao, InvoiceService invoiceService) {
         this.generator = new PdfGenerator();
         this.ownerDao = ownerDao;
+        this.invoiceService = invoiceService;
     }
 
     /**
@@ -45,5 +47,13 @@ public class PdfService {
 
         generator.GenerateInvoicePdf(invoice);
         return fileName;
+    }
+
+    public void createPdfFromInvoiceId(int id) {
+        Invoice invoice = invoiceService.getInvoiceById(id);
+        if (invoice != null) {
+            generator.GenerateInvoicePdf(invoice);
+        }
+
     }
 }
