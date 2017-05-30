@@ -4,6 +4,7 @@ import Project.DAO.CarOwnerDao;
 import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Car_Ownership;
 import com.S63B.domain.Entities.Owner;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,11 @@ public class CarOwnerService {
         }
 
         return cars;
+    }
+
+        public Car_Ownership addCarToOwner(Car car, Owner owner){
+        Car_Ownership car_ownership = new Car_Ownership(car, owner, DateTime.now());
+        carOwnerDao.save(car_ownership);
+        return car_ownership;
     }
 }

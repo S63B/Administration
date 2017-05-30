@@ -39,7 +39,7 @@ public class InvoiceRest {
 	}
 
 	@RequestMapping(value = "/invoices", method = RequestMethod.GET)
-	public Response getInvoicesBetweenDates(@RequestParam(value = "user") int userId) {
+	public Response getInvoicesFromUser(@RequestParam(value = "user") int userId) {
 
 		Owner foundOwner = ownerService.getOwner(userId);
 		List<Invoice> invoices = invoiceService.getInvoicesFromOwner(foundOwner);
