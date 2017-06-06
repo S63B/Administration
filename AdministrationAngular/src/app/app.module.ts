@@ -8,6 +8,7 @@ import { CarService } from "app/car.service";
 
 import { AppComponent } from './app.component';
 import { CarownerComponent } from './carowner/carowner.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CarownerComponent } from './carowner/carowner.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    ReactiveFormsModule
   ],
   providers: [
     HttpModule,

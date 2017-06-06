@@ -16,6 +16,12 @@ export class CarService {
       .map(response => response.json());
   }
 
+
+  getOwner(ownerId: number): Observable<any> {
+    return this.httpService.get(`http://localhost:8080/owner/${ownerId}`)
+      .map(response => response.json());
+  }
+
   getOwnersCars(ownerId: number): Observable<any> {
     return this.httpService.get(`http://localhost:8080/owner/${ownerId}/cars`)
       .map(response => response.json());
