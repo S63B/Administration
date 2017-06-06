@@ -89,23 +89,28 @@ public class PolDao extends BaseDao<Pol> {
 			long meters = 0;
 
 			for (int i = 0; i < pols.size() - 1; i++) {
-				GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyDNtmOxKdE2VfxAHO6wTdiqRZMoGN_20cc").setQueryRateLimit(100);
-				try {
-					DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
-					DistanceMatrix trix = req
-							.origins(new LatLng(pols.get(i).getLat(), pols.get(i).getLng()))
-							.destinations(new LatLng(pols.get(i + 1).getLat(), pols.get(i + 1).getLng()))
-							.mode(TravelMode.DRIVING)
-							.language("en-EN")
-							.await();
-					meters += trix.rows[0].elements[0].distance.inMeters;
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
+				meters += getDistance(new LatLng(pols.get(i).getLat(), pols.get(i).getLng()), new LatLng(pols.get(i + 1).getLat(), pols.get(i + 1).getLng()));
 			}
 			return meters;
 		}
 		return 0;
+	}
+
+	public long getDistance(LatLng from, LatLng to){
+		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyDNtmOxKdE2VfxAHO6wTdiqRZMoGN_20cc").setQueryRateLimit(100);
+		try {
+			DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
+			DistanceMatrix trix = req
+					.origins(from)
+					.destinations(to)
+					.mode(TravelMode.DRIVING)
+					.language("en-EN")
+					.await();
+			return trix.rows[0].elements[0].distance.inMeters;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
 	}
 
 	public Ride updateRide(Ride ride, String licensePlate){
