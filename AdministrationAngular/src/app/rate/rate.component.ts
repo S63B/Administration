@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rate.component.css']
 })
 export class RateComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
+  }
+
+  testEventHandler(event: any) {
+    console.log('in rate component')
   }
 
 }
