@@ -27,9 +27,13 @@ export class CarService {
       .map(response => response.json());
   }
 
-
   addCarToOwner(ownerId: number, carId: number): Observable<any> {
     return this.httpService.post(`http://localhost:8080/car/${ownerId}/add/${carId}`)
       .map(response => response.json());
+  }
+
+  getOwnerInvoices(ownerId: number): Observable<any> {
+    return this.httpService.get(`http://localhost:8080/invoices?user=${ownerId}`)
+      .map(this.httpService.extractData);
   }
 }
