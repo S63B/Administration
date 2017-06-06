@@ -44,7 +44,6 @@ public class OwnerRest {
         Owner owner = ownerService.getOwner(id);
         List<Car> cars = ownerService.getOwnersCars(owner);
 
-        
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(cars, status);
