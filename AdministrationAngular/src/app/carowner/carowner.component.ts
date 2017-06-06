@@ -13,6 +13,7 @@ export class CarownerComponent implements OnInit {
   private owners = [];
   private owner;
   private ownership;
+  private invoices = [];
 
   public addCarForm = this.fb.group({
     carID: ["", Validators.required]
@@ -21,21 +22,20 @@ export class CarownerComponent implements OnInit {
   constructor(private carService: CarService, public fb: FormBuilder) { }
 
   addCar(event) {
-    this.carService.addCarToOwner(this.owner.id, this.addCarForm.controls.carID.value).subscribe(ownership => {
-      this.ownership = ownership;
-      this.getOwnersCars(this.owner.id);
-    });
+    this.addCarToOwner(this.owner.id, this.addCarForm.controls.carID.value);
   }
 
   ngOnInit() {
     this.getOwner(1);
     this.getOwnersCars(1);
     this.getOwners();
+    this.getOwnerInvoices(1);
   }
 
   onChange(val) {
     this.getOwnersCars(val);
     this.getOwner(val);
+    this.getOwnerInvoices(val);
   }
 
   private getOwners() {
@@ -56,4 +56,16 @@ export class CarownerComponent implements OnInit {
     });
   }
 
+  private getOwnerInvoices(ownerId: number) {
+    this.carService.getOwnerInvoices(ownerId).subscribe(invoices => {
+      this.invoices = invoices;
+    });
+  }
+
+  private addCarToOwner(ownerId: number, carId: number){
+    this.carService.addCarToOwner(ownerId, carId).subscribe(ownership => {
+      this.ownership = ownership;
+      this.getOwnersCars(ownerId);
+    });
+  }
 }
