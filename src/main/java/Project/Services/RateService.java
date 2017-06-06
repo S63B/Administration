@@ -27,6 +27,10 @@ public class RateService {
         return Lists.newArrayList(rateDao.findAll());
     }
 
+    public Rate create(Rate newRate) {
+        return rateDao.save(newRate);
+    }
+
     private Rate updateRate(Rate updatedRate){
         return rateDao.save(updatedRate);
     }

@@ -8,16 +8,20 @@ import { CarService } from "app/car.service";
 
 import { AppComponent } from './app.component';
 import { CarownerComponent } from './carowner/carowner.component';
+import { RateComponent } from './rate/rate.component';
+import { routing } from "app/app.routing";
 
 @NgModule({
   declarations: [
     AppComponent,
-    CarownerComponent
+    CarownerComponent,
+    RateComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    routing
   ],
   providers: [
     HttpModule,

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,5 +35,23 @@ public class RateRest {
         }
 
         return new ResponseEntity<>(allRates, status);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<Rate> create(@RequestParam("centerLat") double centerLat,
+                                       @RequestParam("centerLon") double centerLon,
+                                       @RequestParam("radius") double radius,
+                                       @RequestParam("pricing") double pricing) {
+        Rate newRate = new Rate();
+        Rate insertedRate = rateService.create(newRate);
+        HttpStatus status;
+
+        if (insertedRate == null) {
+            status = HttpStatus.BAD_REQUEST;
+        } else {
+            status = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(insertedRate, status);
     }
 }
