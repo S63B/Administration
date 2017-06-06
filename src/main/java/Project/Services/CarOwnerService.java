@@ -36,11 +36,13 @@ public class CarOwnerService {
         List<Car> cars = new ArrayList<>();
 
         for (Car_Ownership ownership : ownerships) {
-            Car_Ownership currentCarowner = carOwnerDao.getAllByCar(ownership.getCar()).stream().max(Comparator.comparing(Car_Ownership::getPurchaseDate)).get();
+            Car_Ownership currentCarOwner = carOwnerDao.getAllByCar(ownership.getCar()).stream().max(Comparator.comparing(Car_Ownership::getPurchaseDate)).get();
 
-            if(currentCarowner.getOwner().getId() == owner.getId()) {
+            if(currentCarOwner.getOwner().getId() == owner.getId()) {
                 Car car = carService.getCarById(ownership.getCar().getId());
-                cars.add(car);
+                if(!cars.contains(car)){
+                    cars.add(car);
+                }
             }
         }
 

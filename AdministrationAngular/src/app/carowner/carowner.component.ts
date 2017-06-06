@@ -12,18 +12,20 @@ export class CarownerComponent implements OnInit {
   private cars = [];
   private owners = [];
   private owner;
+  private ownership;
 
   public addCarForm = this.fb.group({
     carID: ["", Validators.required]
   });
 
-  addCar(event) {
-    console.log(event);
-    console.log(this.addCarForm.controls.carID.value);
-  }
-
-
   constructor(private carService: CarService, public fb: FormBuilder) { }
+
+  addCar(event) {
+    this.carService.addCarToOwner(this.owner.id, this.addCarForm.controls.carID.value).subscribe(ownership => {
+      this.ownership = ownership;
+      this.getOwnersCars(this.owner.id);
+    });
+  }
 
   ngOnInit() {
     this.getOwner(1);

@@ -26,7 +26,6 @@
         <button type="submit" class="btn btn-success">Submit</button>
       </form><br>
 
-
       <table class="table table-hover">
         <thead>
           <tr>
@@ -43,7 +42,7 @@
           <tr *ngFor="let car of cars; let i = index;">
             <td>{{i+1}}</td>
             <td>{{car?.id}}</td>
-            <td>{{car?.licensePlate.license}}</td>
+            <td>{{car?.licensePlate?.license}}</td>
             <td>{{car?.energyLabel}}</td>
             <td>{{car?.stolen == true ? 'Ja' : 'Nee' }}</td>
             <td>{{car?.tracker?.serialNumber }}</td>
