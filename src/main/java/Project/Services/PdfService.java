@@ -34,18 +34,17 @@ public class PdfService {
      * createPdf
      * Creates a Pdf file, later on will need a user id to get the correct data.
      */
-    public String createPdf(int id, long fromdate, long endDate) {
-        //Dummy data
-        //User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
+    public String createPdf(int id, long fromdate, long enddate) {
+        Owner user = ownerDao.findOne(id);
+        DateTime fromDate = new DateTime(fromdate);
+        DateTime endDate = new DateTime(enddate);
 
-        Owner user = ownerDao.findOne(1);
-        DateTime fromDate = new DateTime();
-        fromDate.minusDays(2);
-        Invoice invoice = new Invoice(user, new DateTime(), 200.12, fromDate, new DateTime(), 0, "NL");
+        //TODO generate price here
+        double price = 0;
 
-        String fileName = "factuur.pdf";
+        Invoice invoice = new Invoice(user, new DateTime(), price, fromDate, endDate, 0, "NL");
 
-        generator.GenerateInvoicePdf(invoice);
+        String fileName = generator.GenerateInvoicePdf(invoice);
         return fileName;
     }
 
