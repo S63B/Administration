@@ -4,6 +4,7 @@ import Project.Services.InvoiceService;
 import Project.Services.OwnerService;
 import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,9 @@ public class InvoiceRest {
 
 	@RequestMapping(value = "/invoice", method = RequestMethod.GET)
 	public Response getInvoicesBetweenDates(@RequestParam(value = "user") String userId,
-											@RequestParam(value = "start_date") long startDate,
-											@RequestParam(value = "end_date") long endDate) {
-		List<Invoice> invoices = invoiceService.getInvoicesBetweenDate(userId, startDate, endDate);
+											@RequestParam(value = "start_date") long startdate,
+											@RequestParam(value = "end_date") long enddate) {
+		List<Invoice> invoices = invoiceService.getInvoicesBetweenDate(userId, startdate, enddate);
 
 		return Response.ok().entity(invoices).build();
 	}
@@ -45,6 +46,22 @@ public class InvoiceRest {
 		List<Invoice> invoices = invoiceService.getInvoicesFromOwner(foundOwner);
 
 		return Response.ok().entity(invoices).build();
+	}
+
+	@RequestMapping(value = "/invoice/generate", method = RequestMethod.GET)
+	public Response generateInvoice(@RequestParam(value = "userId") int id,
+									@RequestParam(value = "start_date") long startdate,
+									@RequestParam(value = "end_date") long enddate,
+									@RequestParam(value = "country") String country) {
+		Owner owner = ownerService.getOwner(id);
+		DateTime fromDate = new DateTime(startdate);
+		DateTime endDate = new DateTime(enddate);
+
+		//TODO generate price
+		double price = 50;
+		Invoice invoice = invoiceService.createInvoice(owner, price, fromDate, endDate, country);
+
+		return Response.ok().entity(invoice).build();
 	}
 
 }
