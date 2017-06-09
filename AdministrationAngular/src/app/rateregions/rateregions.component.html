@@ -1,0 +1,30 @@
+<div class="col-md-4">
+  <h1>{{ 'RATE_REGIONS.TITLE' | translate }}</h1>
+  <form *ngFor="let rateRegion of rateRegions" class="rate-region">
+    <p>{{ 'RATE_REGIONS.RATE_REGION' | translate }} {{rateRegion.id}}</p>
+    <label for="rate" class="">{{ 'RATE_REGIONS.RATE' | translate }}:
+      <input type="number" class="form-control input input-sm" name="rate"/>
+    </label>
+    <label for="latitude">{{ 'RATE_REGIONS.LATITUDE' | translate }}:</label>
+    <input type="number" class="form-control input input-sm" name="latitude"/>
+    <label for="longitude">{{ 'RATE_REGIONS.LONGITUDE' | translate }}:</label>
+    <input type="number" class="form-control input input-sm" name="longitude"/>
+    <label for="radius">{{ 'RATE_REGIONS.RADIUS' | translate }}:</label>
+    <input type="number" class="form-control input input-sm" name="radius"/>
+    <label for="startdate">{{ 'RATE_REGIONS.START_DATE' | translate }}:</label>
+    <input type="text" class="form-control input input-sm" name="startdate"/>
+    <label for="enddate">{{ 'RATE_REGIONS.END_DATE' | translate }}</label>
+    <input type="text" class="form-control input input-sm" name="enddate"/>
+    <button type="button" (click)="saveRateRegion(rateRegion)" class="btn btn-sm btn-primary">{{ 'RATE_REGIONS.SAVE' | translate }}</button>
+  </form>
+</div>
+<sebm-google-map class="col-md-8" (mapClick)="mapClicked($event)" [latitude]="51.436596" [longitude]="5.478001">
+  <sebm-google-map-circle *ngFor="let rateRegion of rateRegions"
+    [latitude]="rateRegion.lat" 
+    [longitude]="rateRegion.lng" 
+    [radius]="rateRegion.radius" 
+    (centerChange)="centerChanged($event, rateRegion)"
+    (radiusChange)="radiusChanged($event, rateRegion)"
+    [editable]="true">
+  </sebm-google-map-circle>
+</sebm-google-map>

@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { RateComponent } from "app/rate/rate.component";
+import { RateRegionsComponent } from "app/rateregions/rateregions.component";
 import { CarownerComponent } from "app/carowner/carowner.component";
 
 const appRoutes: Routes = [
@@ -9,8 +9,8 @@ const appRoutes: Routes = [
     path: '',
   },
   {
-    path: 'rate',
-    component: RateComponent
+    path: 'rateregions',
+    component: RateRegionsComponent
   }
 ];
 
