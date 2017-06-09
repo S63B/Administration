@@ -42,7 +42,7 @@ public class PdfService {
         //TODO generate price here
         double price = 0;
 
-        Invoice invoice = new Invoice(user, new DateTime(), price, fromDate, endDate, 0, "NL");
+        Invoice invoice = invoiceService.createInvoice(user, price, fromDate, endDate, "Netherlands");
 
         String fileName = generator.GenerateInvoicePdf(invoice);
         return fileName;
