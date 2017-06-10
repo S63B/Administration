@@ -31,7 +31,11 @@ public class RateService {
         return rateDao.save(newRate);
     }
 
-    private Rate updateRate(Rate updatedRate){
+    public Rate update(Rate updatedRate){
         return rateDao.save(updatedRate);
+    }
+
+    public Rate findById(int id) {
+        return rateDao.findOne(id);
     }
 }

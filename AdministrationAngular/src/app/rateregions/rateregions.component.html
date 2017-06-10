@@ -26,7 +26,7 @@
       <label for="enddate">{{ 'RATE_REGIONS.END_DATE' | translate }}</label>
       <input [(ngModel)]="rateRegion.endDate" type="date" class="form-control input input-sm" name="enddate"/>
     </div>
-    <button type="button" (click)="saveRateRegion(rateRegion)" class="btn btn-sm btn-primary">{{ 'RATE_REGIONS.SAVE' | translate }}</button>
+    <button type="button" (click)="createNewRateRegion(rateRegion)" class="btn btn-sm btn-primary">{{ 'RATE_REGIONS.SAVE' | translate }}</button>
   </form>
 </div>
 <sebm-google-map class="col-md-8" (mapRightClick)="mapRightClicked($event)" [latitude]="51.436596" [longitude]="5.478001">

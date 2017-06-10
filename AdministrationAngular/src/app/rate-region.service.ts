@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+
 import { HttpService } from "app/http.service";
 import { RateRegion } from "app/rate-region";
+
+import { API_URL_ADMINISTRATION } from "app/constants";
 
 @Injectable()
 export class RateRegionService {
@@ -17,7 +20,7 @@ export class RateRegionService {
    * @memberof RateRegionService
    */
   getAll() {
-    return this.httpService.get(`/rate`);
+    return this.httpService.get(`${API_URL_ADMINISTRATION}/rate`);
   }
 
   /**
@@ -29,7 +32,7 @@ export class RateRegionService {
    */
   create(newRateRegion: RateRegion) {
     const rr = newRateRegion;
-    return this.httpService.put(`/rate/${rr.id}/${rr.lat}/${rr.lng}/${rr.rate}/${rr.startDate}/${rr.endDate}`);
+    return this.httpService.post(`${API_URL_ADMINISTRATION}/rate/create?centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
   }
 
   /**
@@ -41,7 +44,7 @@ export class RateRegionService {
    */
   update(updatedRateRegion: RateRegion) {
     const rr = updatedRateRegion; 
-    return this.httpService.put(`/rate/${rr.id}/${rr.lat}/${rr.lng}/${rr.rate}/${rr.startDate}/${rr.endDate}`);
+    return this.httpService.put(`${API_URL_ADMINISTRATION}/rate/update?rateId=${rr.id}&centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
   }
 
 }

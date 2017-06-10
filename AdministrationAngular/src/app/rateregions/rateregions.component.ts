@@ -37,9 +37,10 @@ export class RateRegionsComponent implements OnInit {
    * @memberof RateRegionsComponent
    */
   getRateRegions() {
-    this.rateRegionService.getAll().subscribe(rateRegions => {
-      console.log(rateRegions);
-    });
+    // this.rateRegionService.getAll().subscribe(rateRegions => {
+    //   console.log(rateRegions);
+    //   map result so joda time dates are yyyy-mm-dd format
+    // });
   }
 
   /**
@@ -51,7 +52,7 @@ export class RateRegionsComponent implements OnInit {
    */
   createNewRateRegion(rateRegion: RateRegion) {
     this.rateRegionService.create(rateRegion).subscribe(createdRateRegion => {
-      // update object by using rateRegion.uuid
+      // update objects id by using rateRegion.uuid
     });
   }
 
@@ -64,9 +65,8 @@ export class RateRegionsComponent implements OnInit {
    */
   updateRateRegion(rateRegion: RateRegion) {
     this.rateRegionService.update(rateRegion).subscribe(updatedRateRegion => {
-
+      console.log('updated');
     });
-    // this.rateRegionService.update(rateRegion)
   }
 
   /**
