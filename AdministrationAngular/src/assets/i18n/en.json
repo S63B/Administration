@@ -1,5 +1,14 @@
 {
   "RATE_REGIONS": {
-    "TITLE": "Rate regions"
+    "TITLE": "Rate regions",
+    "RATE_REGION": "Rate region",
+    "RATE": "Rate",
+    "LATITUDE_CENTERPOINT": "Latitude centerpoint",
+    "LONGITUDE_CENTERPOINT": "Longitude centerpoint",
+    "RADIUS": "Radius",
+    "START_DATE": "Start date",
+    "END_DATE": "End date",
+    "SAVE": "Save",
+    "UPDATE": "Update"
   }
 }

@@ -26,6 +26,13 @@ export class HttpService {
     });
   }
 
+  public put(url) {
+    console.log(url);
+    return this.http.put(url, {
+      headers: this.setHeaders()
+    });
+  }
+
   private setHeaders(): Headers {
     const headers: Headers = new Headers();
     //headers.append('Authorization', `Basic ${btoa('bramdb:steve')}`);

@@ -1,5 +1,14 @@
 {
   "RATE_REGIONS": {
-    "TITLE": "Tarief regio's"
+    "TITLE": "Tarief regio's",
+    "RATE_REGION": "Tarief regio",
+    "RATE": "Tarief",
+    "LATITUDE_CENTERPOINT": "Lengtegraad middelpunt",
+    "LONGITUDE_CENTERPOINT": "Breedtegraad middelpunt",
+    "RADIUS": "Straal",
+    "START_DATE": "Ingangsdatum",
+    "END_DATE": "Eind datum",
+    "SAVE": "Creëer nieuwe",
+    "UPDATE": "Update"
   }
 }
