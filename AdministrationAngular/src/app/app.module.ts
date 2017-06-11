@@ -6,18 +6,23 @@ import { HttpModule } from '@angular/http';
 import { HttpService } from "app/http.service";
 import { CarService } from "app/car.service";
 
+import { JodatimePipe } from './jodatime.pipe';
+
 import { AppComponent } from './app.component';
 import { CarownerComponent } from './carowner/carowner.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CarownerComponent
+    CarownerComponent,
+    JodatimePipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    ReactiveFormsModule
   ],
   providers: [
     HttpModule,

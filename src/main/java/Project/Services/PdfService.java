@@ -39,11 +39,12 @@ public class PdfService {
         DateTime fromDate = new DateTime(fromdate);
         DateTime endDate = new DateTime(enddate);
 
-        Invoice invoice = new Invoice(user, new DateTime(), 200.12, fromDate, endDate, 0, "NL");
+        //TODO generate price here
+        double price = 0;
+
+        Invoice invoice = invoiceService.createInvoice(user, price, fromDate, endDate, "NETHERLANDS");
 
         String fileName = generator.GenerateInvoicePdf(invoice);
-
-
         return fileName;
     }
 
