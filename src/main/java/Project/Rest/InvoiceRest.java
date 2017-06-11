@@ -31,7 +31,7 @@ public class InvoiceRest {
 
 
 	@RequestMapping(value = "/invoice", method = RequestMethod.GET)
-	public Response getInvoicesBetweenDates(@RequestParam(value = "user") String userId,
+	public Response getInvoicesBetweenDates(@RequestParam(value = "owner") String userId,
 											@RequestParam(value = "start_date") long startdate,
 											@RequestParam(value = "end_date") long enddate) {
 		List<Invoice> invoices = invoiceService.getInvoicesBetweenDate(userId, startdate, enddate);
@@ -40,7 +40,7 @@ public class InvoiceRest {
 	}
 
 	@RequestMapping(value = "/invoices", method = RequestMethod.GET)
-	public Response getInvoicesFromUser(@RequestParam(value = "user") int userId) {
+	public Response getInvoicesFromOwner(@RequestParam(value = "owner") int userId) {
 
 		Owner foundOwner = ownerService.getOwner(userId);
 		List<Invoice> invoices = invoiceService.getInvoicesFromOwner(foundOwner);
@@ -49,17 +49,16 @@ public class InvoiceRest {
 	}
 
 	@RequestMapping(value = "/invoice/generate", method = RequestMethod.GET)
-	public Response generateInvoice(@RequestParam(value = "userId") int id,
+	public Response generateInvoice(@RequestParam(value = "ownerId") int id,
 									@RequestParam(value = "start_date") long startdate,
-									@RequestParam(value = "end_date") long enddate,
-									@RequestParam(value = "country") String country) {
+									@RequestParam(value = "end_date") long enddate) {
 		Owner owner = ownerService.getOwner(id);
 		DateTime fromDate = new DateTime(startdate);
 		DateTime endDate = new DateTime(enddate);
 
 		//TODO generate price
 		double price = 50;
-		Invoice invoice = invoiceService.createInvoice(owner, price, fromDate, endDate, country);
+		Invoice invoice = invoiceService.createInvoice(owner, price, fromDate, endDate, "NETHERLANDS");
 
 		return Response.ok().entity(invoice).build();
 	}
