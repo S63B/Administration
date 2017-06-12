@@ -8,8 +8,12 @@ import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-tra
 
 import { HttpService } from "app/http.service";
 import { CarService } from "app/car.service";
+
+import { JodatimePipe } from './jodatime.pipe';
+
 import { AppComponent } from './app.component';
 import { CarownerComponent } from './carowner/carowner.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RateRegionsComponent } from './rateregions/rateregions.component';
 import { routing } from "app/app.routing";
 import { UUIDService } from "app/uuid.service";
@@ -19,11 +23,15 @@ import { RateRegionService } from "app/rate-region.service";
   declarations: [
     AppComponent,
     CarownerComponent,
+    JodatimePipe
+    CarownerComponent,
     RateRegionsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
+    ReactiveFormsModule
     HttpModule,
     routing,
     AgmCoreModule.forRoot({
