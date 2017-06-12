@@ -113,6 +113,11 @@ public class RateRest {
         return new ResponseEntity<>(updatedRate, status);
     }
 
+    /**
+     * Deletes a rate region with the given id.
+     * @param rateId The id of the rate region that should be deleted.
+     * @return Whether or not the rate region has been deleted successfully..
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity<Boolean> delete(@RequestParam("rateRegionId") int rateId) {
         Rate rateToDelete = this.rateService.findById(rateId);
