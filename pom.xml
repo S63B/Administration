@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.github.S63B</groupId>
             <artifactId>Domain</artifactId>
-            <version>96af49d23b</version>
+            <version>342d9a18c5</version>
         </dependency>
 
         <dependency>
@@ -108,6 +108,14 @@
             <version>2.2.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Needed for BidiMap -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
