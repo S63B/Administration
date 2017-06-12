@@ -1,4 +1,9 @@
 {
+  "GLOBAL": {
+    "UPDATE_BUTTON": "Update",
+    "SAVE_BUTTON": "Creëer nieuwe",
+    "DELETE_BUTTON": "Verwijder"
+  },
   "RATE_REGIONS": {
     "TITLE": "Tarief regio's",
     "RATE_REGION": "Tarief regio",
@@ -7,8 +12,6 @@
     "LONGITUDE_CENTERPOINT": "Breedtegraad middelpunt",
     "RADIUS": "Straal",
     "START_DATE": "Ingangsdatum",
-    "END_DATE": "Eind datum",
-    "SAVE": "Creëer nieuwe",
-    "UPDATE": "Update"
+    "END_DATE": "Eind datum"
   }
 }

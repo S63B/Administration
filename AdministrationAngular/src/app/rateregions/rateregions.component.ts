@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { SebmGoogleMapCircle } from "angular2-google-maps/core";
 import { RateRegion } from "app/rate-region";
@@ -8,7 +8,8 @@ import { RateRegionService } from "app/rate-region.service";
 @Component({
   selector: 'app-rateregions',
   templateUrl: './rateregions.component.html',
-  styleUrls: ['./rateregions.component.css']
+  styleUrls: ['./rateregions.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RateRegionsComponent implements OnInit {
   private defaultID: number = -1;
@@ -24,35 +25,47 @@ export class RateRegionsComponent implements OnInit {
     private rateRegionService: RateRegionService
   ) {
     this.rateRegions = [];
-    this.rateRegions.push(new RateRegion(-1, "asdfkajsdflka;sdf", 10, 51.436596, 5.478001, 500, this.defaultStartDate, this.defaultEndDate));
     this.getRateRegions();
   }
 
   ngOnInit() {
+
   }
 
   /**
    * Gets all the existing rate regions.
-   * 
-   * @memberof RateRegionsComponent
    */
   getRateRegions() {
-    // this.rateRegionService.getAll().subscribe(rateRegions => {
-    //   console.log(rateRegions);
-    //   map result so joda time dates are yyyy-mm-dd format
-    // });
+    this.rateRegionService.getAll().subscribe(response => {
+      const unparsedRateRegions: RateRegion[] = response.json();
+      if (unparsedRateRegions !== null) {
+        const allRateRegions: RateRegion[] = unparsedRateRegions.map(this.parseRateRegionDates).map(rateRegion => {
+          rateRegion.uuid = this.generateUUID();
+          return rateRegion;
+        });
+        this.rateRegions = allRateRegions;
+      } else {
+        this.rateRegions = [];
+      }
+    });
   }
 
   /**
    * Creates a new rate region in the database through the server.
    * 
    * @param {RateRegion} rateRegion The rate region that should be created.
-   * 
-   * @memberof RateRegionsComponent
    */
   createNewRateRegion(rateRegion: RateRegion) {
-    this.rateRegionService.create(rateRegion).subscribe(createdRateRegion => {
-      // update objects id by using rateRegion.uuid
+    const index = this.getRateRegionIndex(rateRegion);
+
+    if (!this.areDatesValid(rateRegion)) {
+      return;
+    }
+
+    this.rateRegionService.create(rateRegion).subscribe(response => {
+      const createdRateRegion = this.parseRateRegionDates(response.json());
+      createdRateRegion.uuid = rateRegion.uuid;
+      this.rateRegions[index] = createdRateRegion;
     });
   }
 
@@ -60,26 +73,73 @@ export class RateRegionsComponent implements OnInit {
    * Updates an existing rate region in the database through the server.
    * 
    * @param {RateRegion} rateRegion The rate region that needs to be updated.
-   * 
-   * @memberof RateRegionsComponent
    */
   updateRateRegion(rateRegion: RateRegion) {
-    this.rateRegionService.update(rateRegion).subscribe(updatedRateRegion => {
-      console.log('updated');
+    const index = this.getRateRegionIndex(rateRegion);
+
+    if (!this.areDatesValid(rateRegion)) {
+      return;
+    }
+
+    this.rateRegionService.update(rateRegion).subscribe(response => {
+      const updatedRateRegion = this.parseRateRegionDates(response.json());
+      updatedRateRegion.uuid = rateRegion.uuid;
+      this.rateRegions[index] = updatedRateRegion;
     });
+  }
+
+  /**
+   * Checks if the start- and enddate of a rate region are valid.
+   * @param {RateRegion} rateRegion The rate region of which the dates should be validated.
+   * @returns {boolean} Whether or not the dates are valid.
+   */
+  areDatesValid(rateRegion: RateRegion) {
+    return rateRegion.startDate !== "" && rateRegion.endDate !== "";
+  }
+
+  /**
+   * Deletes an existing rate region.
+   * 
+   * @param {RateRegion} rateRegion The rate region that should be deleted.
+   */
+  deleteRateRegion(rateRegion: RateRegion) {
+    const removeRateRegionFromList = () => {
+      const index = this.getRateRegionIndex(rateRegion);
+      this.rateRegions.splice(index, 1);
+    }
+    
+    if (rateRegion.id === -1) {
+      removeRateRegionFromList();
+    } else {
+      this.rateRegionService.delete(rateRegion.id).subscribe(response => {
+        removeRateRegionFromList();
+      });
+    }
+  }
+
+  /**
+   * Parses the region date to YYYY-MM-DD.
+   * 
+   * @param {RateRegion} rateRegion The rate region of which the dates should be parsed.
+   * @returns {RateRegion} The rate region with updated dates.
+   */
+  parseRateRegionDates(rateRegion: RateRegion) {
+    const addZeroToDatePart = datePart => datePart < 10 ? `0${datePart}` : datePart;
+    const parseDate = date => `${date.year}-${addZeroToDatePart(date.monthOfYear)}-${addZeroToDatePart(date.dayOfMonth)}`;
+    rateRegion.startDate = parseDate(rateRegion.startDate);
+    rateRegion.endDate = parseDate(rateRegion.endDate);
+    return rateRegion;
   }
 
   /**
    * Event handler for when a right click occurs on the map.
    * 
    * @param {any} mapClickedEvent An event object containing the coordinates of where the map was right clicked.
-   * 
-   * @memberof RateRegionsComponent
    */
   mapRightClicked(mapClickedEvent: any) {
     const coordinates = mapClickedEvent.coords;
     const newUUID = this.generateUUID();
-    const newRegion 
+    const newRegion
       = new RateRegion(this.defaultID, newUUID, this.defaultRate, coordinates.lat, coordinates.lng, this.defaultRadius, this.defaultStartDate, this.defaultEndDate);
     this.rateRegions.push(newRegion);
   }
@@ -89,15 +149,10 @@ export class RateRegionsComponent implements OnInit {
    * 
    * @param {number} newRadius The new radius in meters.
    * @param {RateRegion} changedRateRegion The rate region of which the radius has been changed.
-   * 
-   * @memberof RateRegionsComponent
    */
   radiusChanged(newRadius: number, changedRateRegion: RateRegion) {
-    const index = this.rateRegions.findIndex(region => region.uuid === changedRateRegion.uuid);
-    if (index === -1) {
-      throw new Error(`Rate region couldn't be found in rate regions array`);
-    }
-    const foundRateRegion = this.rateRegions[index];
+    const index = this.getRateRegionIndex(changedRateRegion);
+    let foundRateRegion = this.rateRegions[index];
     if (foundRateRegion.radius !== newRadius) {
       foundRateRegion.radius = newRadius;
       this.rateRegions[index] = foundRateRegion;
@@ -109,15 +164,10 @@ export class RateRegionsComponent implements OnInit {
    * 
    * @param {any} newCenterCoordinates An object containing the new latitude and longitude of a rate regino.
    * @param {RateRegion} changedRateRegion The rate region of which the centerpoint has been changed.
-   * 
-   * @memberof RateRegionsComponent
    */
   centerpointChanged(newCenterCoordinates: any, changedRateRegion: RateRegion) {
-    const index = this.rateRegions.findIndex(region => region.uuid === changedRateRegion.uuid);
-    if (index === -1) {
-      throw new Error(`Rate region couldn't be found in rate regions array`);
-    }
-    const foundRateRegion = this.rateRegions[index];
+    const index = this.getRateRegionIndex(changedRateRegion);
+    let foundRateRegion = this.rateRegions[index];
     if (foundRateRegion.lat !== newCenterCoordinates.lat || foundRateRegion.lng !== newCenterCoordinates.lng) {
       foundRateRegion.lat = newCenterCoordinates.lat;
       foundRateRegion.lng = newCenterCoordinates.lng;
@@ -126,12 +176,24 @@ export class RateRegionsComponent implements OnInit {
   }
 
   /**
+   * Gets the index of the given rate region.
+   * 
+   * @param {RateRegion} rateRegion 
+   * @returns {number} The index of the rate region or -1 if it couldn't be found.
+   */
+  getRateRegionIndex(rateRegion: RateRegion) {
+    const index = this.rateRegions.findIndex(region => region.uuid === rateRegion.uuid);
+    if (index === -1) {
+      throw new Error(`Rate region couldn't be found in rate regions array`);
+    }
+    return index;
+  }
+
+  /**
    * Generates a random UUID which is used to identify rate regions which do not have a database id assigned to them.
    * Theres a slight change that generated values might not be unique.
    * 
    * @returns {string} A random UUID.
-   * 
-   * @memberof RateRegionsComponent
    */
   generateUUID(): string {
     let uuid = this.uuidService.generate();
@@ -146,8 +208,6 @@ export class RateRegionsComponent implements OnInit {
    * 
    * @param {string} uuid 
    * @returns {boolean} Whether the given UUID is already in used by another region.
-   * 
-   * @memberof RateRegionsComponent
    */
   doesUUIDExist(uuid: string) {
     return typeof this.rateRegions.find(region => region.uuid === uuid) !== 'undefined';

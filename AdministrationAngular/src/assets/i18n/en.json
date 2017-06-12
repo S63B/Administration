@@ -1,4 +1,9 @@
 {
+  "GLOBAL": {
+    "UPDATE_BUTTON": "Update",
+    "SAVE_BUTTON": "Create new",
+    "DELETE_BUTTON": "Delete"
+  },
   "RATE_REGIONS": {
     "TITLE": "Rate regions",
     "RATE_REGION": "Rate region",

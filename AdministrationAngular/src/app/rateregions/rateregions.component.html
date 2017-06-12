@@ -1,41 +1,49 @@
 <div class="col-md-4">
   <h1>{{ 'RATE_REGIONS.TITLE' | translate }}</h1>
-  <form *ngFor="let rateRegion of rateRegions" class="rate-region" #rateForm="ngForm">
-    <p>{{ 'RATE_REGIONS.RATE_REGION' | translate }} {{rateRegion.id}}</p>
-    <div class="form-group">
-      <label for="rate" class="">{{ 'RATE_REGIONS.RATE' | translate }}:</label>
-      <input [(ngModel)]="rateRegion.rate" type="number" step="0.1" class="form-control input input-sm" name="rate"/>
-    </div>
-    <div class="form-group">
-      <label for="latitude">{{ 'RATE_REGIONS.LATITUDE_CENTERPOINT' | translate }}:</label>
-      <input [(ngModel)]="rateRegion.lat" type="number" step="0.0001" class="form-control input input-sm" name="latitude"/>
-    </div>
-    <div class="form-group">
-      <label for="longitude">{{ 'RATE_REGIONS.LONGITUDE_CENTERPOINT' | translate }}:</label>
-      <input [(ngModel)]="rateRegion.lng" type="number" step="0.0001" class="form-control input input-sm" name="longitude"/>
-    </div>
-    <div class="form-group">
-      <label for="radius">{{ 'RATE_REGIONS.RADIUS' | translate }}:</label>
-      <input [(ngModel)]="rateRegion.radius" type="number" step="10" class="form-control input input-sm" name="radius"/>
-    </div>
-    <div class="form-group">
-      <label for="startdate">{{ 'RATE_REGIONS.START_DATE' | translate }}:</label>
-      <input [(ngModel)]="rateRegion.startDate" type="date" class="form-control input input-sm" name="startdate"/>
-    </div>
-    <div class="form-group">
-      <label for="enddate">{{ 'RATE_REGIONS.END_DATE' | translate }}</label>
-      <input [(ngModel)]="rateRegion.endDate" type="date" class="form-control input input-sm" name="enddate"/>
-    </div>
-    <button type="button" (click)="createNewRateRegion(rateRegion)" class="btn btn-sm btn-primary">{{ 'RATE_REGIONS.SAVE' | translate }}</button>
-  </form>
+  <div *ngIf="rateRegions.length > 0; else noRateRegions" class="rate-regions">
+    <form *ngFor="let rateRegion of rateRegions" class="rate-region" #rateForm="ngForm">
+      <p>{{ 'RATE_REGIONS.RATE_REGION' | translate }} {{rateRegion.id}}</p>
+      <div class="form-group">
+        <label for="rate" class="">{{ 'RATE_REGIONS.RATE' | translate }}:</label>
+        <input [(ngModel)]="rateRegion.rate" type="number" step="0.1" class="form-control input input-sm" name="rate" />
+      </div>
+      <div class="form-group">
+        <label for="latitude">{{ 'RATE_REGIONS.LATITUDE_CENTERPOINT' | translate }}:</label>
+        <input [(ngModel)]="rateRegion.lat" type="number" step="0.0001" class="form-control input input-sm" name="latitude" />
+      </div>
+      <div class="form-group">
+        <label for="longitude">{{ 'RATE_REGIONS.LONGITUDE_CENTERPOINT' | translate }}:</label>
+        <input [(ngModel)]="rateRegion.lng" type="number" step="0.0001" class="form-control input input-sm" name="longitude" />
+      </div>
+      <div class="form-group">
+        <label for="radius">{{ 'RATE_REGIONS.RADIUS' | translate }}:</label>
+        <input [(ngModel)]="rateRegion.radius" type="number" step="10" class="form-control input input-sm" name="radius" />
+      </div>
+      <div class="form-group">
+        <label for="startdate">{{ 'RATE_REGIONS.START_DATE' | translate }}:</label>
+        <input [(ngModel)]="rateRegion.startDate" type="date" class="form-control input input-sm" name="startdate" />
+      </div>
+      <div class="form-group">
+        <label for="enddate">{{ 'RATE_REGIONS.END_DATE' | translate }}</label>
+        <input [(ngModel)]="rateRegion.endDate" type="date" class="form-control input input-sm" name="enddate" />
+      </div>
+      <button *ngIf="rateRegion.id === -1" type="button" (click)="createNewRateRegion(rateRegion)" class="btn btn-sm btn-primary">
+        {{ 'GLOBAL.SAVE_BUTTON' | translate }}
+      </button>
+      <button *ngIf="rateRegion.id !== -1" type="button" (click)="updateRateRegion(rateRegion)" class="btn btn-sm btn-primary">
+        {{ 'GLOBAL.UPDATE_BUTTON' | translate }}
+      </button>
+      <button type="button" (click)="deleteRateRegion(rateRegion)" class="btn btn-sm btn-primary">
+        {{ 'GLOBAL.DELETE_BUTTON' | translate }}
+      </button>
+    </form>
+  </div>
+  <ng-template #noRateRegions>
+    <p>No rate regions exist yet, create the first one by right clicking the map!</p>
+  </ng-template>
 </div>
 <sebm-google-map class="col-md-8" (mapRightClick)="mapRightClicked($event)" [latitude]="51.436596" [longitude]="5.478001">
-  <sebm-google-map-circle *ngFor="let rateRegion of rateRegions"
-    [latitude]="rateRegion.lat" 
-    [longitude]="rateRegion.lng" 
-    [radius]="rateRegion.radius" 
-    (centerChange)="centerpointChanged($event, rateRegion)"
-    (radiusChange)="radiusChanged($event, rateRegion)"
-    [editable]="true">
+  <sebm-google-map-circle *ngFor="let rateRegion of rateRegions" [latitude]="rateRegion.lat" [longitude]="rateRegion.lng" [radius]="rateRegion.radius"
+    (centerChange)="centerpointChanged($event, rateRegion)" (radiusChange)="radiusChanged($event, rateRegion)" [editable]="true">
   </sebm-google-map-circle>
 </sebm-google-map>

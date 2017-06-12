@@ -38,4 +38,14 @@ public class RateService {
     public Rate findById(int id) {
         return rateDao.findOne(id);
     }
+
+    public boolean delete(Rate rateToDelete) {
+        try {
+            rateDao.delete(rateToDelete);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }

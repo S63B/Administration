@@ -27,8 +27,6 @@ export class RateRegionService {
    * Creates a new rate region in the database through the server.
    * 
    * @param {RateRegion} rateRegion The rate region that should be created.
-   *
-   * @memberof RateRegionService
    */
   create(newRateRegion: RateRegion) {
     const rr = newRateRegion;
@@ -36,15 +34,17 @@ export class RateRegionService {
   }
 
   /**
-   * * Updates an existing rate region in the database through the server
+   * Updates an existing rate region in the database through the server
    * 
    * @param {RateRegion} updatedRateRegion The rate region that needs to be updated.
-   * 
-   * @memberof RateRegionService
    */
   update(updatedRateRegion: RateRegion) {
     const rr = updatedRateRegion; 
     return this.httpService.put(`${API_URL_ADMINISTRATION}/rate/update?rateId=${rr.id}&centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
+  }
+
+  delete(rateRegionId: number) {
+    return this.httpService.delete(`/rate/delete?rateRegionId=${rateRegionId}`);
   }
 
 }
