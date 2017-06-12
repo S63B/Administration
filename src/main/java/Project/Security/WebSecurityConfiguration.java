@@ -1,4 +1,4 @@
-package Project.security;
+package Project.Security;
 
 import Project.DAO.AccountDao;
 import com.S63B.domain.Entities.Account;
@@ -19,9 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
+	private AccountDao accountDao;
 
 	@Autowired
-	private AccountDao accountDao;
+	public WebSecurityConfiguration(AccountDao accountDao) {
+		this.accountDao = accountDao;
+	}
 
 	@Override
 	public void init(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,7 +36,6 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
 	@Bean
 	UserDetailsService userDetailsService() {
 		return new UserDetailsService() {
-
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 				Account account = accountDao.findByUsername(username);
@@ -45,7 +47,6 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
 							+ username + "'");
 				}
 			}
-
 		};
 	}
 
