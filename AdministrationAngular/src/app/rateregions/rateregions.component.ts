@@ -52,7 +52,7 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Creates a new rate region in the database through the server.
-   * 
+   *
    * @param {RateRegion} rateRegion The rate region that should be created.
    */
   createNewRateRegion(rateRegion: RateRegion) {
@@ -71,7 +71,7 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Updates an existing rate region in the database through the server.
-   * 
+   *
    * @param {RateRegion} rateRegion The rate region that needs to be updated.
    */
   updateRateRegion(rateRegion: RateRegion) {
@@ -99,7 +99,7 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Deletes an existing rate region.
-   * 
+   *
    * @param {RateRegion} rateRegion The rate region that should be deleted.
    */
   deleteRateRegion(rateRegion: RateRegion) {
@@ -107,19 +107,22 @@ export class RateRegionsComponent implements OnInit {
       const index = this.getRateRegionIndex(rateRegion);
       this.rateRegions.splice(index, 1);
     }
-    
+
     if (rateRegion.id === -1) {
       removeRateRegionFromList();
     } else {
       this.rateRegionService.delete(rateRegion.id).subscribe(response => {
-        removeRateRegionFromList();
+        const result = response.json();
+        if (result) {
+          removeRateRegionFromList();
+        }
       });
     }
   }
 
   /**
    * Parses the region date to YYYY-MM-DD.
-   * 
+   *
    * @param {RateRegion} rateRegion The rate region of which the dates should be parsed.
    * @returns {RateRegion} The rate region with updated dates.
    */
@@ -133,7 +136,7 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Event handler for when a right click occurs on the map.
-   * 
+   *
    * @param {any} mapClickedEvent An event object containing the coordinates of where the map was right clicked.
    */
   mapRightClicked(mapClickedEvent: any) {
@@ -146,7 +149,7 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Event handler for when a rate regions radius has been changed.
-   * 
+   *
    * @param {number} newRadius The new radius in meters.
    * @param {RateRegion} changedRateRegion The rate region of which the radius has been changed.
    */
@@ -161,7 +164,7 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Event handler for when the centerpoint of a rate region has been changed.
-   * 
+   *
    * @param {any} newCenterCoordinates An object containing the new latitude and longitude of a rate regino.
    * @param {RateRegion} changedRateRegion The rate region of which the centerpoint has been changed.
    */
@@ -177,22 +180,22 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Gets the index of the given rate region.
-   * 
-   * @param {RateRegion} rateRegion 
+   *
+   * @param {RateRegion} rateRegion
    * @returns {number} The index of the rate region or -1 if it couldn't be found.
    */
   getRateRegionIndex(rateRegion: RateRegion) {
     const index = this.rateRegions.findIndex(region => region.uuid === rateRegion.uuid);
     if (index === -1) {
-      throw new Error(`Rate region couldn't be found in rate regions array`);
+      throw new Error(`Rate region couldn't be found in rate regions array.`);
     }
     return index;
   }
 
   /**
    * Generates a random UUID which is used to identify rate regions which do not have a database id assigned to them.
-   * Theres a slight change that generated values might not be unique.
-   * 
+   * Checks if the UUID is already in use because there's a slight change that generated values might not be unique.
+   *
    * @returns {string} A random UUID.
    */
   generateUUID(): string {
@@ -205,8 +208,8 @@ export class RateRegionsComponent implements OnInit {
 
   /**
    * Checks if the generate UUID is already being used by one of the rgions.
-   * 
-   * @param {string} uuid 
+   *
+   * @param {string} uuid
    * @returns {boolean} Whether the given UUID is already in used by another region.
    */
   doesUUIDExist(uuid: string) {
