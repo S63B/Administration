@@ -23,6 +23,8 @@ import java.util.List;
 @Service("pdfService")
 public class PdfService {
 
+    private double DEFAULT_RATE = 1;
+
     private PdfGenerator generator;
     private OwnerDao ownerDao;
     private InvoiceService invoiceService;
@@ -91,7 +93,7 @@ public class PdfService {
                     Pol p1 = pols.get(i);
                     Pol p2 = pols.get(i + 1);
 
-                    long distance = polDao.getDistance(new LatLng(p1.getLat(), p1.getLng()), new LatLng(p2.getLat(), p2.getLng()));
+                    double distance = polDao.getDistance(new LatLng(p1.getLat(), p1.getLng()), new LatLng(p2.getLat(), p2.getLng()));
 
                     Ellipse2D r1 = null;
                     Ellipse2D r2 = null;
@@ -122,23 +124,20 @@ public class PdfService {
                     }
 
                     if (pr1 == -1){
-                        // TODO: Set pr1 to default value
-                        pr1 = 0;
+                        pr1 = DEFAULT_RATE;
                     }
 
                     if (pr2 == -1){
-                        // TODO: Set pr2 to default value
-                        pr2 = 0;
+                        pr2 = DEFAULT_RATE;
                     }
 
                     double pr = Math.max(pr1, pr2);
 
-                    // TODO: Verify if this actually makes sense
-                    price += pr * distance;
+                    price += pr * (distance / 1000);
                 }
             }
         }
 
-        return price;
+        return (double) Math.round(price * 100) / 100;
     }
 }
