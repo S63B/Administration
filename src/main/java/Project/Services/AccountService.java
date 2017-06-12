@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
 	private AccountDao accountDao;
-
-	@Autowired
 	private BCryptPasswordEncoder encoder;
 
 	@Autowired
-	public AccountService(AccountDao accountDao) {
+	public AccountService(AccountDao accountDao, BCryptPasswordEncoder encoder) {
 		this.accountDao = accountDao;
+		this.encoder = encoder;
 	}
 
 	public Account registerAccount(String username, String password) {
@@ -31,8 +30,14 @@ public class AccountService {
 			account = new Account(username, hashedPassword);
 			accountDao.save(account);
 		}
-
-
 		return account;
-}
+	}
+
+	public Account update(Account account) {
+		return this.accountDao.save(account);
+	}
+
+	public Account getAccount(String username) {
+		return accountDao.findByUsername(username);
+	}
 }

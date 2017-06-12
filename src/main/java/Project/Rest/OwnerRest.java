@@ -81,6 +81,7 @@ public class OwnerRest {
         returnOwner.setRole("user");
         returnOwner.setInvoices(new ArrayList<>());
         returnOwner.setOwnedCars(new ArrayList<>());
+        returnOwner.setPassword("$2a$10$GQESaa2PyfzbFHef/CvKeenVxndERdQ7YRWuSwuCnn0n3ObqDC8bO");
 
         return returnOwner;
     }
