@@ -1,5 +1,6 @@
 package Project.Rest;
 
+import Project.Services.AuthenticationService;
 import Project.Services.OwnerService;
 import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Owner;
@@ -20,10 +21,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class OwnerRest {
     private OwnerService ownerService;
+    private AuthenticationService authService;
 
     @Autowired
-    public OwnerRest(OwnerService ownerService) {
+    public OwnerRest(OwnerService ownerService, AuthenticationService authService) {
         this.ownerService = ownerService;
+        this.authService = authService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -76,10 +79,12 @@ public class OwnerRest {
         returnOwner.setCanEditPrice(restOwner.isCanEditPrice());
         returnOwner.setResidence(restOwner.getResidence());
         returnOwner.setUsername(restOwner.getUsername());
+        returnOwner.setPassword(authService.encodeString(restOwner.getPassword()));
         returnOwner.setUsesWebsite(restOwner.isUsesWebsite());
         returnOwner.setRole("user");
         returnOwner.setInvoices(new ArrayList<>());
         returnOwner.setOwnedCars(new ArrayList<>());
+        returnOwner.setPassword("$2a$10$GQESaa2PyfzbFHef/CvKeenVxndERdQ7YRWuSwuCnn0n3ObqDC8bO");
 
         return returnOwner;
     }
@@ -91,6 +96,7 @@ class RestOwner{
     String name;
     String residence;
     String username;
+    String password;
     boolean usesWebsite;
 
     public RestOwner() {
@@ -144,6 +150,14 @@ class RestOwner{
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isUsesWebsite() {
