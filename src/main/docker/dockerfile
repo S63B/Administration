@@ -1,6 +1,6 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
-ADD Administration-0.0.1-SNAPSHOT.jar Administration.jar
-RUN sh -c 'touch /Administration.jar'
+ADD administration-0.0.1-SNAPSHOT.jar administration.jar
+RUN sh -c 'touch /administration.jar'
 ENV JAVA_OPTS=""
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /Administration.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /administration.jar" ]

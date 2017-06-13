@@ -1,6 +1,8 @@
 package Project.Services;
 
 import Project.DAO.OwnerDao;
+import Project.DAO.PolDao;
+import Project.DAO.RateDao;
 import Project.Pdf.PdfGenerator;
 import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
@@ -18,35 +20,35 @@ public class PdfService {
     private PdfGenerator generator;
     private OwnerDao ownerDao;
     private InvoiceService invoiceService;
-
-
-    public PdfService() {
-    }
+    private PolDao polDao;
+    private RateDao rateDao;
 
     @Autowired
-    private void PdfService(OwnerDao ownerDao, InvoiceService invoiceService) {
+    private PdfService(OwnerDao ownerDao, InvoiceService invoiceService, PolDao polDao, RateDao rateDao) {
         this.generator = new PdfGenerator();
         this.ownerDao = ownerDao;
         this.invoiceService = invoiceService;
+        this.polDao = polDao;
+        this.rateDao = rateDao;
     }
 
     /**
      * createPdf
      * Creates a Pdf file, later on will need a user id to get the correct data.
      */
-    public String createPdf(int id, long fromdate, long endDate) {
-        //Dummy data
-        //User user = new User(1, "Tim Daniëls", "Kerkstraat  qweqweasda", "Casteren", false, "Admin", true);
+    public String createPdf(int owner_id, long fromdate, long enddate) {
+        Owner owner = ownerDao.findOne(owner_id);
 
-        Owner user = ownerDao.findOne(1);
-        DateTime fromDate = new DateTime();
-        fromDate.minusDays(2);
-        Invoice invoice = new Invoice(user, new DateTime(), 200.12, fromDate, new DateTime(), 0, "NL");
+        if (owner == null){
+            return null;
+        }
 
-        String fileName = "factuur.pdf";
+        DateTime fromDate = new DateTime(fromdate);
+        DateTime endDate = new DateTime(enddate);
 
-        generator.GenerateInvoicePdf(invoice);
-        return fileName;
+        Invoice invoice = invoiceService.createInvoice(owner, fromDate, endDate, "NETHERLANDS");
+
+        return generator.GenerateInvoicePdf(invoice);
     }
 
     public void createPdfFromInvoiceId(int id) {
@@ -54,6 +56,6 @@ public class PdfService {
         if (invoice != null) {
             generator.GenerateInvoicePdf(invoice);
         }
-
     }
+
 }
