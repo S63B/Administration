@@ -208,7 +208,7 @@ public class PdfGenerator {
 				table.addCell(new Phrase(c.getLicensePlate().getLicense()));
 				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("dd/MM/yyyy HH:mm:ss")));
 				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("dd/MM/yyyy HH:mm:ss")));
-				double kms = r.getDistance() / 1000;
+				double kms = (double)r.getDistance() / 1000;
 				table.addCell(new Phrase(String.valueOf(kms)));
 			}
 		}
