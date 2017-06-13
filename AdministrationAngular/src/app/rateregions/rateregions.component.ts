@@ -65,8 +65,8 @@ export class RateRegionsComponent implements OnInit {
     this.rateRegionService.create(rateRegion).subscribe(response => {
       const createdRateRegion = this.parseRateRegionDates(response.json());
       createdRateRegion.uuid = rateRegion.uuid;
-      createdRateRegion.active = true;
       this.rateRegions[index] = createdRateRegion;
+      this.setActiveRateRegion(createdRateRegion);
     });
   }
 
@@ -85,8 +85,8 @@ export class RateRegionsComponent implements OnInit {
     this.rateRegionService.update(rateRegion).subscribe(response => {
       const updatedRateRegion = this.parseRateRegionDates(response.json());
       updatedRateRegion.uuid = rateRegion.uuid;
-      updatedRateRegion.active = true;
       this.rateRegions[index] = updatedRateRegion;
+      this.setActiveRateRegion(updatedRateRegion);
     });
   }
 
@@ -146,8 +146,8 @@ export class RateRegionsComponent implements OnInit {
     const newUUID = this.generateUUID();
     const newRegion
       = new RateRegion(this.defaultID, newUUID, this.defaultRate, coordinates.lat, coordinates.lng, this.defaultRadius, this.defaultStartDate, this.defaultEndDate);
-    newRegion.active = true;
     this.rateRegions.push(newRegion);
+    this.setActiveRateRegion(newRegion);
   }
 
   /**
@@ -161,7 +161,7 @@ export class RateRegionsComponent implements OnInit {
     let foundRateRegion = this.rateRegions[index];
     if (foundRateRegion.radius !== newRadius) {
       foundRateRegion.radius = newRadius;
-      foundRateRegion.active = true;
+      this.setActiveRateRegion(foundRateRegion);
       this.rateRegions[index] = foundRateRegion;
     }
   }
@@ -178,9 +178,29 @@ export class RateRegionsComponent implements OnInit {
     if (foundRateRegion.lat !== newCenterCoordinates.lat || foundRateRegion.lng !== newCenterCoordinates.lng) {
       foundRateRegion.lat = newCenterCoordinates.lat;
       foundRateRegion.lng = newCenterCoordinates.lng;
-      foundRateRegion.active = true;
+      this.setActiveRateRegion(foundRateRegion);
       this.rateRegions[index] = foundRateRegion;
     }
+  }
+
+  /**
+   * Deactivates the currently active rate region (if there is one) and sets a new rate region as active.
+   * @param {RateRegion} rateRegion The new rate region that should be set to active.
+   */
+  setActiveRateRegion(newActiveRegion: RateRegion) {
+    const index = this.rateRegions.findIndex(rateRegion => {
+      return rateRegion.active;
+    });
+    if (index !== -1) {
+      let currentlyActiveRateRegion = this.rateRegions[index];
+      currentlyActiveRateRegion.active = false;
+      this.rateRegions[index] = currentlyActiveRateRegion;
+    }
+    
+    const activeRegionIndex = this.getRateRegionIndex(newActiveRegion);
+    let regionToUpdate = this.rateRegions[activeRegionIndex];
+    regionToUpdate.active = true;
+    this.rateRegions[activeRegionIndex] = regionToUpdate;
   }
 
   /**
