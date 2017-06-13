@@ -1,0 +1,20 @@
+.rate-regions {
+    max-height: 840px;
+    overflow-y: scroll;
+}
+
+.rate-region .form-control {
+    display: inline-block;
+}
+
+.rate-region , .rate-region .form-group {
+    margin-bottom: 5px;
+}
+
+.sebm-google-map-container {
+    height: 500px
+}
+
+.sebm-google-map-container-inner {
+    width: unset !important;
+}
