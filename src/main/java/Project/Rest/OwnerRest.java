@@ -3,7 +3,6 @@ package Project.Rest;
 import Project.Services.OwnerService;
 import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Owner;
-import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,9 +42,18 @@ public class OwnerRest {
     public ResponseEntity<List<Car>> getOwnersCars(@PathVariable("ownerId") int id) {
         Owner owner = ownerService.getOwner(id);
         List<Car> cars = ownerService.getOwnersCars(owner);
+
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(cars, status);
+    }
+
+    @RequestMapping(value = "{ownerId}", method = RequestMethod.GET)
+    public ResponseEntity<Owner> getOwner(@PathVariable("ownerId") int id) {
+        Owner owner = ownerService.getOwner(id);
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(owner, status);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes =  MediaType.APPLICATION_JSON_UTF8_VALUE)

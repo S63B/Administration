@@ -56,7 +56,7 @@ public class PdfService {
 
         double price = calculatePrice(owner, fromDate, endDate);
 
-        Invoice invoice = new Invoice(owner, new DateTime(), price, fromDate, endDate, 0, "NL");
+        Invoice invoice = invoiceService.createInvoice(owner, price, fromDate, endDate, "NETHERLANDS");
 
         return generator.GenerateInvoicePdf(invoice);
     }
