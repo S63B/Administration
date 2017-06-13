@@ -56,9 +56,7 @@ public class InvoiceRest {
 		DateTime fromDate = new DateTime(startdate);
 		DateTime endDate = new DateTime(enddate);
 
-		//TODO generate price
-		double price = 50;
-		Invoice invoice = invoiceService.createInvoice(owner, price, fromDate, endDate, "NETHERLANDS");
+		Invoice invoice = invoiceService.createInvoice(owner, fromDate, endDate, "NETHERLANDS");
 
 		return Response.ok().entity(invoice).build();
 	}

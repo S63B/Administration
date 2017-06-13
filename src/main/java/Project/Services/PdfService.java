@@ -1,6 +1,8 @@
 package Project.Services;
 
 import Project.DAO.OwnerDao;
+import Project.DAO.PolDao;
+import Project.DAO.RateDao;
 import Project.Pdf.PdfGenerator;
 import com.S63B.domain.Entities.Invoice;
 import com.S63B.domain.Entities.Owner;
@@ -18,34 +20,35 @@ public class PdfService {
     private PdfGenerator generator;
     private OwnerDao ownerDao;
     private InvoiceService invoiceService;
-
-
-    public PdfService() {
-    }
+    private PolDao polDao;
+    private RateDao rateDao;
 
     @Autowired
-    private void PdfService(OwnerDao ownerDao, InvoiceService invoiceService) {
+    private PdfService(OwnerDao ownerDao, InvoiceService invoiceService, PolDao polDao, RateDao rateDao) {
         this.generator = new PdfGenerator();
         this.ownerDao = ownerDao;
         this.invoiceService = invoiceService;
+        this.polDao = polDao;
+        this.rateDao = rateDao;
     }
 
     /**
      * createPdf
      * Creates a Pdf file, later on will need a user id to get the correct data.
      */
-    public String createPdf(int id, long fromdate, long enddate) {
-        Owner user = ownerDao.findOne(id);
+    public String createPdf(int owner_id, long fromdate, long enddate) {
+        Owner owner = ownerDao.findOne(owner_id);
+
+        if (owner == null){
+            return null;
+        }
+
         DateTime fromDate = new DateTime(fromdate);
         DateTime endDate = new DateTime(enddate);
 
-        //TODO generate price here
-        double price = 0;
+        Invoice invoice = invoiceService.createInvoice(owner, fromDate, endDate, "NETHERLANDS");
 
-        Invoice invoice = invoiceService.createInvoice(user, price, fromDate, endDate, "NETHERLANDS");
-
-        String fileName = generator.GenerateInvoicePdf(invoice);
-        return fileName;
+        return generator.GenerateInvoicePdf(invoice);
     }
 
     public void createPdfFromInvoiceId(int id) {
@@ -53,6 +56,6 @@ public class PdfService {
         if (invoice != null) {
             generator.GenerateInvoicePdf(invoice);
         }
-
     }
+
 }
