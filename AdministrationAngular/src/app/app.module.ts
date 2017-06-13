@@ -17,13 +17,15 @@ import { routing } from "app/app.routing";
 import { UUIDService } from "app/uuid.service";
 import { RateRegionService } from "app/rate-region.service";
 import { JodatimePipe } from './jodatime.pipe';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarownerComponent,
     RateRegionsComponent,
-    JodatimePipe
+    JodatimePipe,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
