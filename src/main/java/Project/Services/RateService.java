@@ -27,7 +27,25 @@ public class RateService {
         return Lists.newArrayList(rateDao.findAll());
     }
 
-    private Rate updateRate(Rate updatedRate){
+    public Rate create(Rate newRate) {
+        return rateDao.save(newRate);
+    }
+
+    public Rate update(Rate updatedRate){
         return rateDao.save(updatedRate);
+    }
+
+    public Rate findById(int id) {
+        return rateDao.findOne(id);
+    }
+
+    public boolean delete(Rate rateToDelete) {
+        try {
+            rateDao.delete(rateToDelete);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 }

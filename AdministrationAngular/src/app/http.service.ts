@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Headers, Response, Http } from '@angular/http';
 
+import { API_URL_ADMINISTRATION } from "app/constants";
+
 @Injectable()
 export class HttpService {
 
@@ -22,6 +24,20 @@ export class HttpService {
   public post(url) {
     console.log(url);
     return this.http.post(url, {
+      headers: this.setHeaders()
+    });
+  }
+
+  public put(url) {
+    console.log(url);
+    return this.http.put(url, {
+      headers: this.setHeaders()
+    });
+  }
+
+  public delete(url) {
+    const fullURL = `${API_URL_ADMINISTRATION}${url}`;
+    return this.http.delete(fullURL, {
       headers: this.setHeaders()
     });
   }
