@@ -18,6 +18,7 @@ import { UUIDService } from "app/uuid.service";
 import { RateRegionService } from "app/rate-region.service";
 import { JodatimePipe } from './jodatime.pipe';
 import { HeaderComponent } from './header/header.component';
+import { SearchPipe } from './search.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { HeaderComponent } from './header/header.component';
     CarownerComponent,
     RateRegionsComponent,
     JodatimePipe,
-    HeaderComponent
+    HeaderComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,
