@@ -44,7 +44,7 @@ export class HttpService {
 
   private setHeaders(): Headers {
     const headers: Headers = new Headers();
-    //headers.append('Authorization', `Basic ${btoa('bramdb:steve')}`);
+    headers.append('Authorization', `Basic ${btoa('admin:admin')}`);
     return headers;
   }
 }
