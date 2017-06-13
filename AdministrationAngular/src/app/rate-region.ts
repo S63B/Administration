@@ -1,4 +1,6 @@
 export class RateRegion {
+    public active: boolean;
+    
     constructor(
         public id: number,
         public uuid: string,

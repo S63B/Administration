@@ -65,6 +65,7 @@ export class RateRegionsComponent implements OnInit {
     this.rateRegionService.create(rateRegion).subscribe(response => {
       const createdRateRegion = this.parseRateRegionDates(response.json());
       createdRateRegion.uuid = rateRegion.uuid;
+      createdRateRegion.active = true;
       this.rateRegions[index] = createdRateRegion;
     });
   }
@@ -84,6 +85,7 @@ export class RateRegionsComponent implements OnInit {
     this.rateRegionService.update(rateRegion).subscribe(response => {
       const updatedRateRegion = this.parseRateRegionDates(response.json());
       updatedRateRegion.uuid = rateRegion.uuid;
+      updatedRateRegion.active = true;
       this.rateRegions[index] = updatedRateRegion;
     });
   }
@@ -144,6 +146,7 @@ export class RateRegionsComponent implements OnInit {
     const newUUID = this.generateUUID();
     const newRegion
       = new RateRegion(this.defaultID, newUUID, this.defaultRate, coordinates.lat, coordinates.lng, this.defaultRadius, this.defaultStartDate, this.defaultEndDate);
+    newRegion.active = true;
     this.rateRegions.push(newRegion);
   }
 
@@ -158,6 +161,7 @@ export class RateRegionsComponent implements OnInit {
     let foundRateRegion = this.rateRegions[index];
     if (foundRateRegion.radius !== newRadius) {
       foundRateRegion.radius = newRadius;
+      foundRateRegion.active = true;
       this.rateRegions[index] = foundRateRegion;
     }
   }
@@ -174,6 +178,7 @@ export class RateRegionsComponent implements OnInit {
     if (foundRateRegion.lat !== newCenterCoordinates.lat || foundRateRegion.lng !== newCenterCoordinates.lng) {
       foundRateRegion.lat = newCenterCoordinates.lat;
       foundRateRegion.lng = newCenterCoordinates.lng;
+      foundRateRegion.active = true;
       this.rateRegions[index] = foundRateRegion;
     }
   }
