@@ -29,16 +29,6 @@ public class InvoiceRest {
 		this.ownerService = ownerService;
 	}
 
-
-	@RequestMapping(value = "/invoice", method = RequestMethod.GET)
-	public Response getInvoicesBetweenDates(@RequestParam(value = "owner") String userId,
-											@RequestParam(value = "start_date") long startdate,
-											@RequestParam(value = "end_date") long enddate) {
-		List<Invoice> invoices = invoiceService.getInvoicesBetweenDate(userId, startdate, enddate);
-
-		return Response.ok().entity(invoices).build();
-	}
-
 	@RequestMapping(value = "/invoices", method = RequestMethod.GET)
 	public Response getInvoicesFromOwner(@RequestParam(value = "owner") int userId) {
 
