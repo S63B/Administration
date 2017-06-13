@@ -15,6 +15,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
+				.antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
 				.antMatchers("/account/register").permitAll()
 				.anyRequest()
 				.fullyAuthenticated()
