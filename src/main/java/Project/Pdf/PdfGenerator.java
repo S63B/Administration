@@ -186,7 +186,7 @@ public class PdfGenerator {
 		table.addCell(new Phrase("Auto", PdfFonts.smallBold));
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
-		table.addCell(new Phrase("Aantal Meter", PdfFonts.smallBold));
+		table.addCell(new Phrase("Aantal Km", PdfFonts.smallBold));
 
 
 		//Get each car from the owner
@@ -208,7 +208,8 @@ public class PdfGenerator {
 				table.addCell(new Phrase(c.getLicensePlate().getLicense()));
 				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("dd/MM/yyyy HH:mm:ss")));
 				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("dd/MM/yyyy HH:mm:ss")));
-				table.addCell(new Phrase(String.valueOf(r.getDistance())));
+				double kms = r.getDistance() / 1000;
+				table.addCell(new Phrase(String.valueOf(kms)));
 			}
 		}
 		//Set space before the table to 30f.
