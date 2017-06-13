@@ -34,10 +34,6 @@ public class InvoiceService {
 		this.polDao = polDao;
 	}
 
-	public List<Invoice> getInvoicesBetweenDate(String userId, long startDate, long endDate) {
-		return null;
-	}
-
 	public List<Invoice> getInvoicesFromOwner(Owner owner) {
 		return invoiceDao.getByOwner(owner);
 	}
