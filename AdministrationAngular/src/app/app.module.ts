@@ -11,12 +11,14 @@ import { JodatimePipe } from './jodatime.pipe';
 import { AppComponent } from './app.component';
 import { CarownerComponent } from './carowner/carowner.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SearchPipe } from './search.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarownerComponent,
-    JodatimePipe
+    JodatimePipe,
+    SearchPipe
   ],
   imports: [
     BrowserModule,

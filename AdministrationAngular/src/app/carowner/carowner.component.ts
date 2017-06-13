@@ -41,6 +41,12 @@ export class CarownerComponent implements OnInit {
   private getOwners() {
     this.carService.getOwners().subscribe(owners => {
       this.owners = owners;
+
+      for (var i = this.owners.length - 1; i >= 0; i--) {
+        if (this.owners[i]["name"] == null) {
+          this.owners.splice(i, 1);
+        }
+      }
     });
   }
 
