@@ -20,8 +20,12 @@ import java.io.IOException;
 @CrossOrigin(origins = "*")
 public class PdfRest {
 
+	private final PdfService service;
+
 	@Autowired
-	PdfService service;
+	public PdfRest(PdfService service) {
+		this.service = service;
+	}
 
 	/**
 	 * Create a pdf and downloads it.
@@ -62,8 +66,6 @@ public class PdfRest {
 			service.createPdfFromInvoiceId(invoiceId);
 			resource = new FileSystemResource(fileName);
 		}
-
-
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_PDF);

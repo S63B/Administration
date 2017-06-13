@@ -3,7 +3,6 @@ package Project.Rest;
 import Project.Services.OwnerService;
 import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Owner;
-import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
