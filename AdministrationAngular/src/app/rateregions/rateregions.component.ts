@@ -51,7 +51,7 @@ export class RateRegionsComponent implements OnInit {
   }
 
   /**
-   * Creates a new rate region in the database through the server.
+   * Creates a new rate region.
    *
    * @param {RateRegion} rateRegion The rate region that should be created.
    */
@@ -71,7 +71,7 @@ export class RateRegionsComponent implements OnInit {
   }
 
   /**
-   * Updates an existing rate region in the database through the server.
+   * Updates an existing rate region.
    *
    * @param {RateRegion} rateRegion The rate region that needs to be updated.
    */
