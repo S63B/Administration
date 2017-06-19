@@ -5,8 +5,8 @@ import { CarownerComponent } from "app/carowner/carowner.component";
 
 const appRoutes: Routes = [
   {
-    component: CarownerComponent,
     path: '',
+    component: CarownerComponent
   },
   {
     path: 'rateregions',
