@@ -12,24 +12,30 @@ import { AppComponent } from './app.component';
 import { CarownerComponent } from './carowner/carowner.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchPipe } from './search.pipe';
+import { RegistrationComponent } from './registration/registration.component';
+import {AccountService} from "./account.service";
+import {routing} from "./app.routing";
 
 @NgModule({
   declarations: [
     AppComponent,
     CarownerComponent,
     JodatimePipe,
-    SearchPipe
+    SearchPipe,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    routing
   ],
   providers: [
     HttpModule,
     HttpService,
-    CarService
+    CarService,
+    AccountService
   ],
   bootstrap: [AppComponent]
 })

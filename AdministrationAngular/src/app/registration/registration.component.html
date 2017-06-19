@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="col-xs-12 col-md-8">
+    <h1>Registreer</h1>
+    <form #userForm="ngForm">
+      <div class="form-group">
+        <label for="username">Gebruikersnaam</label>
+        <input [(ngModel)]="account.username" id="username" type="text" class="form-control input-sm" name="username" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Wachtwoord</label>
+        <input [(ngModel)]="account.password" type="password" id="password" class="form-control input-sm" name="password" required/>
+      </div>
+
+      <button (click)="register()" type="submit" class="btn btn-primary" [disabled]="!userForm.valid">Registreer</button>
+    </form>
+  </div>
+  <hr class="col-xs-12" />
+</div>
