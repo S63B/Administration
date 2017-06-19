@@ -9,8 +9,6 @@ export class UUIDService {
    * Generates a UUID (universally unique identifier).
    * 
    * @static
-   * 
-   * @memberof UUIDService
    */
   generate(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
