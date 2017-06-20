@@ -3,11 +3,13 @@ import { HttpService } from "app/http.service";
 import { Observable } from "rxjs/Rx";
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {API_URL_ADMINISTRATION} from "./constants";
 import {Router} from "@angular/router";
+import {environment} from "environments/environment";
 
 @Injectable()
 export class AuthService {
+   private API_URL_ADMINISTRATION: string = environment.administrationUrl;
+
 
   constructor(private httpService: HttpService, private router: Router) {
   }
@@ -20,7 +22,7 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     localStorage.setItem("auth", `${btoa(`${username}:${password}`)}`);
 
-    let url = `${API_URL_ADMINISTRATION}/account/loggedin`;
+    let url = `${this.API_URL_ADMINISTRATION}/account/loggedin`;
     return this.httpService.get(url).map(res => res.status);
   }
 

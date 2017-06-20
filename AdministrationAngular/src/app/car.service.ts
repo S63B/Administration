@@ -10,7 +10,7 @@ import { environment } from "../environments/environment.prod"
 @Injectable()
 export class CarService {
   private API_URL_ADMINISTRATION = environment.administrationUrl;
-  
+
   constructor(private httpService: HttpService) {
   }
 
@@ -36,7 +36,7 @@ export class CarService {
   }
 
   getOwnerInvoices(ownerId: number): Observable<any> {
-    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/invoices?user=${ownerId}`)
+    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/invoices?owner=${ownerId}`)
       .map(this.httpService.extractData);
   }
 }
