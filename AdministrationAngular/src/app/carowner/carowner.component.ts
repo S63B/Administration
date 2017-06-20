@@ -9,11 +9,11 @@ import { Validators, FormBuilder } from "@angular/forms";
 })
 export class CarownerComponent implements OnInit {
 
-  private cars = [];
-  private owners = [];
-  private owner;
-  private ownership;
-  private invoices = [];
+  private _cars = [];
+  private _owners = [];
+  private _owner;
+  private _ownership;
+  private _invoices = [];
 
   public addCarForm = this.fb.group({
     carID: ["", Validators.required]
@@ -73,5 +73,45 @@ export class CarownerComponent implements OnInit {
       this.ownership = ownership;
       this.getOwnersCars(ownerId);
     });
+  }
+
+  public get cars() {
+    return this._cars;
+  }
+
+  public get owners() {
+    return this._owners;
+  }
+
+  public get owner() {
+    return this._owner;
+  }
+
+  public get ownership() {
+    return this._ownership;
+  }
+
+  public get invoices() {
+    return this._invoices;
+  }
+
+  public set cars(cars:any[]){
+    this._cars = cars;
+  }
+
+  public set owners(owners:any[]){
+    this._owners = owners;
+  }
+
+  public set owner(owner:any){
+    this._owner = owner;
+  }
+
+  public set ownership(ownership:Object){
+    this._ownership = ownership;
+  }
+
+  public set invoices(invoices:Object[]){
+    this._invoices = invoices;
   }
 }

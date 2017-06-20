@@ -4,36 +4,39 @@ import { Observable } from "rxjs/Rx";
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
+import { environment } from "../environments/environment.prod"
+
 
 @Injectable()
 export class CarService {
-  
+  private API_URL_ADMINISTRATION = environment.administrationUrl;
+
   constructor(private httpService: HttpService) {
   }
 
   getOwners(): Observable<any> {
-    return this.httpService.get(`http://localhost:8080/owner`)
+    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/owner`)
       .map(response => response.json());
   }
 
 
   getOwner(ownerId: number): Observable<any> {
-    return this.httpService.get(`http://localhost:8080/owner/${ownerId}`)
+    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/owner/${ownerId}`)
       .map(response => response.json());
   }
 
   getOwnersCars(ownerId: number): Observable<any> {
-    return this.httpService.get(`http://localhost:8080/owner/${ownerId}/cars`)
+    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/owner/${ownerId}/cars`)
       .map(response => response.json());
   }
 
   addCarToOwner(ownerId: number, carId: number): Observable<any> {
-    return this.httpService.post(`http://localhost:8080/car/${ownerId}/add/${carId}`)
+    return this.httpService.post(`${this.API_URL_ADMINISTRATION}/${ownerId}/add/${carId}`)
       .map(response => response.json());
   }
 
   getOwnerInvoices(ownerId: number): Observable<any> {
-    return this.httpService.get(`http://localhost:8080/invoices?user=${ownerId}`)
+    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/invoices?owner=${ownerId}`)
       .map(this.httpService.extractData);
   }
 }

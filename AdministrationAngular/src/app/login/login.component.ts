@@ -8,9 +8,9 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private username: string = "";
-  private password: string = "";
-  private succes: boolean = true;
+  private _username: string = "";
+  private _password: string = "";
+  private _succes: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -19,11 +19,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.username, this.password).subscribe(res => {
-      this.succes = (res == 200);
-      console.log(`Succes: ${this.succes}`);
+    this.authService.login(this._username, this._password).subscribe(res => {
+      this._succes = (res == 200);
+      console.log(`Succes: ${this._succes}`);
 
-      if (this.succes) {
+      if (this._succes) {
         console.log('Log in succesfull');
         this.router.navigateByUrl('');
       }
@@ -31,7 +31,27 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem("auth");
       }
     })
+  }
 
+
+  public get succes():boolean {
+    return this._succes;
+  }
+
+  public set succes(succes:boolean){
+    this._succes = succes;
+  }
+
+  public set username(username:string){
+    this._username = username;
+  }
+
+  public get password():string {
+    return this._password;
+  }
+
+  public set password(password:string){
+    this._password = password;
   }
 
 }
