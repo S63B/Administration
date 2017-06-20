@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="col-xs-12 col-md-8">
+    <h1>Login</h1>
+    <form #userForm="ngForm">
+      <div class="form-group">
+        <label for="username">Gebruikersnaam</label>
+        <input [(ngModel)]="username" id="username" type="text" class="form-control input-sm" name="username" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Wachtwoord</label>
+        <input [(ngModel)]="password" type="password" id="password" class="form-control input-sm" name="password" required/>
+      </div>
+
+      <button (click)="login()" type="submit" class="btn btn-primary" [disabled]="!userForm.valid">Login</button>
+    </form>
+
+    <div *ngIf="!succes">Failed to login</div>
+  </div>
+  <hr class="col-xs-12" />
+</div>
