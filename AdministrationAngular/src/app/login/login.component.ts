@@ -27,6 +27,9 @@ export class LoginComponent implements OnInit {
         console.log('Log in succesfull');
         this.router.navigateByUrl('');
       }
+      else {
+        localStorage.removeItem("auth");
+      }
     })
 
   }
