@@ -2,10 +2,8 @@ import {RouterModule, Routes} from "@angular/router";
 import {CarownerComponent} from "./carowner/carowner.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {ModuleWithProviders} from "@angular/core";
-/**
- * Created by Nekkyou on 19-6-2017.
- */
-
+import { CarownerComponent } from "app/carowner/carowner.component";
+import { RateRegionsComponent } from "app/rateregions/rateregions.component";
 
 const appRoutes: Routes = [
   {
@@ -15,6 +13,10 @@ const appRoutes: Routes = [
   {
     path: 'register',
     component: RegistrationComponent
+  },
+  {
+    path: 'rateregions',
+    component: RateRegionsComponent
   }
 ];
 
