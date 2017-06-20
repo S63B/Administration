@@ -3,11 +3,14 @@ import {CarownerComponent} from "./carowner/carowner.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {ModuleWithProviders} from "@angular/core";
 import { RateRegionsComponent } from "app/rateregions/rateregions.component";
+import {LoginComponent} from "./login/login.component";
+import {CanActivateAuthGuard} from "./can-active.authguard";
 
 const appRoutes: Routes = [
   {
     path: '',
-    component: CarownerComponent
+    component: CarownerComponent,
+    canActivate: [CanActivateAuthGuard]
   },
   {
     path: 'register',
@@ -15,7 +18,12 @@ const appRoutes: Routes = [
   },
   {
     path: 'rateregions',
-    component: RateRegionsComponent
+    component: RateRegionsComponent,
+    canActivate: [CanActivateAuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   }
 ];
 
