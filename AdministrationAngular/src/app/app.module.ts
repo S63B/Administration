@@ -21,6 +21,9 @@ import { SearchPipe } from './search.pipe';
 import { RegistrationComponent } from './registration/registration.component';
 import {AccountService} from "./account.service";
 import {routing} from "./app.routing";
+import { LoginComponent } from './login/login.component';
+import {AuthService} from "./auth.service";
+import {CanActivateAuthGuard} from "./can-active.authguard";
 
 
 @NgModule({
@@ -31,7 +34,8 @@ import {routing} from "./app.routing";
     JodatimePipe,
     SearchPipe,
     RegistrationComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,9 @@ import {routing} from "./app.routing";
     CarService,
     AccountService,
     UUIDService,
-    RateRegionService
+    RateRegionService,
+    AuthService,
+    CanActivateAuthGuard,
   ],
   bootstrap: [AppComponent]
 })
