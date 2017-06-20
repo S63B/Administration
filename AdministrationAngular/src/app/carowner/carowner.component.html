@@ -4,24 +4,81 @@
       <label>Eigenaar:</label>
       <select #userselect (change)="onChange(userselect.value)" class="form-control">
         <option *ngFor="let owner of owners" [value]="owner.id">{{owner.name}}</option>
-  	  </select>
+  	  </select><br>
+
+      <dl class="dl-horizontal">
+        <dt>ID</dt>
+        <dd>{{owner?.id}}</dd>
+        <dt>Naam</dt>
+        <dd>{{owner?.name}}</dd>
+        <dt>Adres</dt>
+        <dd>{{owner?.address}}</dd>
+        <dt>Woonplaats</dt>
+        <dd>{{owner?.residence}}</dd>
+        <dt>Gebruikt website</dt>
+        <dd>{{owner?.usesWebsite == true ? 'Ja' : 'Nee' }}</dd>
+      </dl>
+
+
+      <label>Facturen</label>
+<input type="text" #searchFilter (keyup)="0"/>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Datum</th>
+            <th>Totaal</th>
+            <th>Betaald</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let invoice of invoices | search : searchFilter.value" id="cards">
+          <td>
+            {{invoice?.id}}
+          </td>
+          <td>
+            {{invoice?.date | jodatime}}
+          </td>
+          <td>
+            {{invoice?.totalPrice}}
+          </td>
+          <td>
+            {{invoice?.paymentStatus == 1 ? 'Ja' : 'Nee' }}
+          </td>
+          <td>
+            <a href="http://localhost:8080/download?id={{invoice?.id}}" target="_blank">Download</a>
+          </td>
+        </tr>
+      </table>
+
+      <form [formGroup]="addCarForm" (ngSubmit)="addCar($event)">
+        <div class="form-group">
+          <label for="carID">Koppel auto met {{ "{ID}" }}</label>
+          <input type="number" class="form-control" formControlName="carID" name="carID" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form><br>
 
       <table class="table table-hover">
         <thead>
           <tr>
             <th>#</th>
+            <th>ID</th>
             <th>License Plate</th>
             <th>Energie Label</th>
             <th>Gestolen</th>
+            <th>Tracker serienummer</th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let car of cars; let i = index;">
             <td>{{i+1}}</td>
-            <td>{{car?.licensePlate.license}}</td>
+            <td>{{car?.id}}</td>
+            <td>{{car?.licensePlate?.license}}</td>
             <td>{{car?.energyLabel}}</td>
             <td>{{car?.stolen == true ? 'Ja' : 'Nee' }}</td>
+            <td>{{car?.tracker?.serialNumber }}</td>
           </tr>
         </tbody>
       </table>

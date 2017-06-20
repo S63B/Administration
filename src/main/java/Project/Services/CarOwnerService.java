@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,8 +34,14 @@ public class CarOwnerService {
         List<Car> cars = new ArrayList<>();
 
         for (Car_Ownership ownership : ownerships) {
-            Car car = carService.getCarById(ownership.getCar().getId());
-            cars.add(car);
+            Car_Ownership currentCarOwner = carOwnerDao.getAllByCar(ownership.getCar()).stream().max(Comparator.comparing(Car_Ownership::getPurchaseDate)).get();
+
+            if(currentCarOwner.getOwner().getId() == owner.getId()) {
+                Car car = carService.getCarById(ownership.getCar().getId());
+                if(!cars.contains(car)){
+                    cars.add(car);
+                }
+            }
         }
 
         return cars;

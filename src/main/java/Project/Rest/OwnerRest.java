@@ -1,15 +1,16 @@
 package Project.Rest;
 
+import Project.Services.AuthenticationService;
 import Project.Services.OwnerService;
 import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Owner;
-import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +21,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class OwnerRest {
     private OwnerService ownerService;
+    private AuthenticationService authService;
 
     @Autowired
-    public OwnerRest(OwnerService ownerService) {
+    public OwnerRest(OwnerService ownerService, AuthenticationService authService) {
         this.ownerService = ownerService;
+        this.authService = authService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -42,32 +45,60 @@ public class OwnerRest {
     public ResponseEntity<List<Car>> getOwnersCars(@PathVariable("ownerId") int id) {
         Owner owner = ownerService.getOwner(id);
         List<Car> cars = ownerService.getOwnersCars(owner);
+
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(cars, status);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes =  MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Owner> createOwner(@RequestBody restOwner owner) {
-       // Owner createdOwner = ownerService.createOwner(owner);
+    @RequestMapping(value = "{ownerId}", method = RequestMethod.GET)
+    public ResponseEntity<Owner> getOwner(@PathVariable("ownerId") int id) {
+        Owner owner = ownerService.getOwner(id);
         HttpStatus status = HttpStatus.OK;
-        Owner newOwner = new Owner();
-        newOwner.setUsername(owner.username);
-        if(newOwner == null){
+
+        return new ResponseEntity<>(owner, status);
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes =  MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Owner> createOwner(@RequestBody RestOwner restOwner) {
+
+        Owner createdOwner = ownerService.createOwner(createOwnerFromRestOwner(restOwner));
+        HttpStatus status = HttpStatus.OK;
+
+        if(createdOwner == null){
             status = HttpStatus.ALREADY_REPORTED;
         }
 
-        return new ResponseEntity<>(newOwner, status);
+        return new ResponseEntity<>(createdOwner, status);
+    }
+
+    private Owner createOwnerFromRestOwner(RestOwner restOwner){
+        Owner returnOwner = new Owner();
+        returnOwner.setName(restOwner.getName());
+        returnOwner.setAddress(restOwner.getAddress());
+        returnOwner.setCanEditPrice(restOwner.isCanEditPrice());
+        returnOwner.setResidence(restOwner.getResidence());
+        returnOwner.setUsername(restOwner.getUsername());
+        returnOwner.setPassword(authService.encodeString(restOwner.getPassword()));
+        returnOwner.setUsesWebsite(restOwner.isUsesWebsite());
+        returnOwner.setRole("user");
+        returnOwner.setInvoices(new ArrayList<>());
+        returnOwner.setOwnedCars(new ArrayList<>());
+
+        return returnOwner;
     }
 }
 
-class restOwner{
+class RestOwner{
     String address;
     boolean canEditPrice;
     String name;
     String residence;
+    String username;
+    String password;
+    boolean usesWebsite;
 
-    public restOwner() {
+    public RestOwner() {
     }
 
     String role;
@@ -120,6 +151,14 @@ class restOwner{
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isUsesWebsite() {
         return usesWebsite;
     }
@@ -128,6 +167,5 @@ class restOwner{
         this.usesWebsite = usesWebsite;
     }
 
-    String username;
-    boolean usesWebsite;
+
 }

@@ -1,5 +1,6 @@
 package Project.DAO;
 
+import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Car_Ownership;
 import com.S63B.domain.Entities.Owner;
 import org.springframework.data.repository.CrudRepository;
@@ -13,4 +14,5 @@ import java.util.List;
 @Repository
 public interface CarOwnerDao extends CrudRepository<Car_Ownership, Integer> {
     List<Car_Ownership> getAllByOwner(Owner owner);
+    List<Car_Ownership> getAllByCar(Car car);
 }

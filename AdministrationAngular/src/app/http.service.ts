@@ -19,16 +19,30 @@ export class HttpService {
     });
   }
 
-  public post(url) {
+  public post(url, body?) {
     console.log(url);
-    return this.http.post(url, {
+    return this.http.post(url, body, {
+      headers: this.setHeaders()
+    });
+  }
+
+  public put(url, body?) {
+    console.log(url);
+    return this.http.put(url, body, {
+      headers: this.setHeaders(),
+    });
+  }
+
+  public delete(url) {
+    return this.http.delete(url, {
       headers: this.setHeaders()
     });
   }
 
   private setHeaders(): Headers {
     const headers: Headers = new Headers();
-    //headers.append('Authorization', `Basic ${btoa('bramdb:steve')}`);
+    let info = localStorage.getItem("auth");
+    headers.append('Authorization', `Basic ${info}`);
     return headers;
   }
 }

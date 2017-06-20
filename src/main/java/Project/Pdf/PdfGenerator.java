@@ -9,10 +9,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import static Project.Pdf.PdfFonts.*;
  * Created by Nekkyou on 4-4-2017.
  */
 public class PdfGenerator {
+	private final Logger logger = LoggerFactory.getLogger(PdfGenerator.class);
+
 	private PolDao polDao;
 
 	private Document document;
@@ -61,9 +65,10 @@ public class PdfGenerator {
 		userData.put("Auto's", String.valueOf((invoice.getOwner().getOwnedCars().size())));
 
 		document = new Document();
+
 		try
 		{
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename));
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
 			document.open();
 			setMetadata();
 
@@ -73,10 +78,9 @@ public class PdfGenerator {
 			//Close document
 			document.close();
 			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			logger.error("Error while writing document to file", ex);
 		}
-
 
 		return filename;
 	}
@@ -105,10 +109,13 @@ public class PdfGenerator {
 		document.add(p);
 
 		//Add country flag to corner
-		Image img = Image.getInstance(imagePath);
-		img.scaleAbsolute(imgWidth, imgHeight);
-		img.setAbsolutePosition(PageSize.A4.getWidth() - (imgWidth + 10), PageSize.A4.getHeight() - (imgHeight + 10));
-		document.add(img);
+		File imageFile = new File(imagePath);
+		if (imageFile.exists()) {
+			Image img = Image.getInstance(imagePath);
+			img.scaleAbsolute(imgWidth, imgHeight);
+			img.setAbsolutePosition(PageSize.A4.getWidth() - (imgWidth + 10), PageSize.A4.getHeight() - (imgHeight + 10));
+			document.add(img);
+		}
 	}
 
 	/**
@@ -182,7 +189,7 @@ public class PdfGenerator {
 		table.addCell(new Phrase("Auto", PdfFonts.smallBold));
 		table.addCell(new Phrase("Van datum", PdfFonts.smallBold));
 		table.addCell(new Phrase("Tot datum", PdfFonts.smallBold));
-		table.addCell(new Phrase("Aantal Meter", PdfFonts.smallBold));
+		table.addCell(new Phrase("Aantal Km", PdfFonts.smallBold));
 
 
 		//Get each car from the owner
@@ -204,7 +211,8 @@ public class PdfGenerator {
 				table.addCell(new Phrase(c.getLicensePlate().getLicense()));
 				table.addCell(new Phrase(new DateTime(r.getStartDate()).toString("dd/MM/yyyy HH:mm:ss")));
 				table.addCell(new Phrase(new DateTime(r.getEndDate()).toString("dd/MM/yyyy HH:mm:ss")));
-				table.addCell(new Phrase(String.valueOf(r.getDistance())));
+				double kms = (double)r.getDistance() / 1000;
+				table.addCell(new Phrase(String.valueOf(kms)));
 			}
 		}
 		//Set space before the table to 30f.

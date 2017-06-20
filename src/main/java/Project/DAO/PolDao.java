@@ -8,6 +8,8 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -20,12 +22,14 @@ import java.util.List;
 @Repository
 public class PolDao extends BaseDao<Pol> {
 
+	private final Logger logger = LoggerFactory.getLogger(PolDao.class);
+
 	public boolean deletePols(String licensePlate){
 		try{
 			em.createNamedQuery("Pol.deletePolls", Pol.class).setParameter("licensePlate", licensePlate);
 			return true;
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while executing named query", ex);
 			return false;
 		}
 	}
@@ -33,8 +37,8 @@ public class PolDao extends BaseDao<Pol> {
 	public List<Pol> getPols(String licensePlate){
 		try{
 			return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while executing named query", ex);
 			return null;
 		}
 	}
@@ -42,8 +46,8 @@ public class PolDao extends BaseDao<Pol> {
 	public List<Pol> getPolsBetween(String licensePlate, long startDate, long endDate){
 		try{
 			return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("licensePlate", licensePlate).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while executing named query", ex);
 			return null;
 		}
 	}
@@ -77,8 +81,8 @@ public class PolDao extends BaseDao<Pol> {
 				rides.add(currentRide);
 			}
 			return rides;
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while getting rides", ex);
 			return null;
 		}
 	}
@@ -89,23 +93,28 @@ public class PolDao extends BaseDao<Pol> {
 			long meters = 0;
 
 			for (int i = 0; i < pols.size() - 1; i++) {
-				GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyDNtmOxKdE2VfxAHO6wTdiqRZMoGN_20cc").setQueryRateLimit(100);
-				try {
-					DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
-					DistanceMatrix trix = req
-							.origins(new LatLng(pols.get(i).getLat(), pols.get(i).getLng()))
-							.destinations(new LatLng(pols.get(i + 1).getLat(), pols.get(i + 1).getLng()))
-							.mode(TravelMode.DRIVING)
-							.language("en-EN")
-							.await();
-					meters += trix.rows[0].elements[0].distance.inMeters;
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
+				meters += getDistance(new LatLng(pols.get(i).getLat(), pols.get(i).getLng()), new LatLng(pols.get(i + 1).getLat(), pols.get(i + 1).getLng()));
 			}
 			return meters;
 		}
 		return 0;
+	}
+
+	public long getDistance(LatLng from, LatLng to){
+		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyDNtmOxKdE2VfxAHO6wTdiqRZMoGN_20cc").setQueryRateLimit(100);
+		try {
+			DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
+			DistanceMatrix trix = req
+					.origins(from)
+					.destinations(to)
+					.mode(TravelMode.DRIVING)
+					.language("en-EN")
+					.await();
+			return trix.rows[0].elements[0].distance.inMeters;
+		} catch (Exception ex) {
+			logger.error("Error while calculating distance", ex);
+			return 0;
+		}
 	}
 
 	public Ride updateRide(Ride ride, String licensePlate){
@@ -114,8 +123,7 @@ public class PolDao extends BaseDao<Pol> {
 			ride.setEndDate(ride.getPols().get(ride.getPols().size() - 1).getTimestampMillis());
 		}
 
-		ride.setDistance((long) this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1));
-
+		ride.setDistance(this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1));
 		return ride;
 	}
 }

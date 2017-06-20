@@ -1,0 +1,11 @@
+#header {
+    position: relative;
+}
+
+.navbar-brand {
+    font-size: 24px;
+}
+
+.navbar-container {
+    margin-top: 10px;
+}
