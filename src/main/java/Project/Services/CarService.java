@@ -2,12 +2,7 @@ package Project.Services;
 
 import Project.DAO.CarDao;
 import com.S63B.domain.Entities.Car;
-import com.S63B.domain.Entities.LicensePlate;
-import com.S63B.domain.Entities.Pol;
-import com.S63B.domain.Entities.Tracker;
-import com.S63B.domain.Enums;
 import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +24,7 @@ public class CarService {
 
 
     public List<Car> getAllCars(){
-        List<Car> allCars = Lists.newArrayList(carDao.findAll());
-
-        System.out.println("COUNT: "+allCars.size());
-        return allCars;
+        return Lists.newArrayList(carDao.findAll());
     }
 
     public Car getCarById(int id){
