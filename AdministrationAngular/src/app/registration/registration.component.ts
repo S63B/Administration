@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
-  private account: Account = new Account();
+  private _account: Account = new Account();
 
   constructor(private accountService: AccountService, private router: Router) { }
 
@@ -22,4 +22,11 @@ export class RegistrationComponent implements OnInit {
       .subscribe(res => this.router.navigateByUrl(''));
   }
 
+  public get account():Account {
+    return this._account;
+  }
+
+  public set account(account:Account){
+    this._account = account;
+  }
 }

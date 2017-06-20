@@ -18,7 +18,7 @@ export class RateRegionsComponent implements OnInit {
   private defaultStartDate: string = '2017-06-09';
   private defaultEndDate: string = '2017-12-31';
 
-  private rateRegions: RateRegion[];
+  private _rateRegions: RateRegion[];
 
   constructor(
     private uuidService: UUIDService,
@@ -196,7 +196,7 @@ export class RateRegionsComponent implements OnInit {
       currentlyActiveRateRegion.active = false;
       this.rateRegions[index] = currentlyActiveRateRegion;
     }
-    
+
     const activeRegionIndex = this.getRateRegionIndex(newActiveRegion);
     let regionToUpdate = this.rateRegions[activeRegionIndex];
     regionToUpdate.active = true;
@@ -239,5 +239,13 @@ export class RateRegionsComponent implements OnInit {
    */
   doesUUIDExist(uuid: string) {
     return typeof this.rateRegions.find(region => region.uuid === uuid) !== 'undefined';
+  }
+
+  public get rateRegions():RateRegion[] {
+    return this._rateRegions;
+  }
+
+  public set rateRegions(rateRegions:RateRegion[]){
+    this._rateRegions = rateRegions;
   }
 }
