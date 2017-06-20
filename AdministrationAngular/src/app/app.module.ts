@@ -21,6 +21,9 @@ import { SearchPipe } from './search.pipe';
 import { RegistrationComponent } from './registration/registration.component';
 import {AccountService} from "./account.service";
 import {routing} from "./app.routing";
+import { LoginComponent } from './login/login.component';
+import {AuthService} from "./auth.service";
+import {CanActivateAuthGuard} from "./can-active.authguard";
 
 export function createTranslateStaticLoader(http: Http) {
   return new TranslateStaticLoader(http, '/assets/i18n', '.json');
@@ -34,7 +37,8 @@ export function createTranslateStaticLoader(http: Http) {
     JodatimePipe,
     SearchPipe,
     RegistrationComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +62,9 @@ export function createTranslateStaticLoader(http: Http) {
     CarService,
     AccountService,
     UUIDService,
-    RateRegionService
+    RateRegionService,
+    AuthService,
+    CanActivateAuthGuard,
   ],
   bootstrap: [AppComponent]
 })
