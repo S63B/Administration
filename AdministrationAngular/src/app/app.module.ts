@@ -22,6 +22,9 @@ import { RegistrationComponent } from './registration/registration.component';
 import {AccountService} from "./account.service";
 import {routing} from "./app.routing";
 
+export function createTranslateStaticLoader(http: Http) {
+  return new TranslateStaticLoader(http, '/assets/i18n', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -45,7 +48,7 @@ import {routing} from "./app.routing";
     }),
     TranslateModule.forRoot({
       provide: TranslateLoader,
-      useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+      useFactory: (createTranslateStaticLoader),
       deps: [Http]
     })
   ],
