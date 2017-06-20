@@ -5,13 +5,11 @@ import com.S63B.domain.Entities.Car;
 import com.S63B.domain.Entities.Car_Ownership;
 import com.S63B.domain.Entities.Owner;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

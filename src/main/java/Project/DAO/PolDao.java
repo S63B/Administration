@@ -8,6 +8,8 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -20,12 +22,14 @@ import java.util.List;
 @Repository
 public class PolDao extends BaseDao<Pol> {
 
+	private final Logger logger = LoggerFactory.getLogger(PolDao.class);
+
 	public boolean deletePols(String licensePlate){
 		try{
 			em.createNamedQuery("Pol.deletePolls", Pol.class).setParameter("licensePlate", licensePlate);
 			return true;
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while executing named query", ex);
 			return false;
 		}
 	}
@@ -33,8 +37,8 @@ public class PolDao extends BaseDao<Pol> {
 	public List<Pol> getPols(String licensePlate){
 		try{
 			return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while executing named query", ex);
 			return null;
 		}
 	}
@@ -42,8 +46,8 @@ public class PolDao extends BaseDao<Pol> {
 	public List<Pol> getPolsBetween(String licensePlate, long startDate, long endDate){
 		try{
 			return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("licensePlate", licensePlate).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while executing named query", ex);
 			return null;
 		}
 	}
@@ -77,8 +81,8 @@ public class PolDao extends BaseDao<Pol> {
 				rides.add(currentRide);
 			}
 			return rides;
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while getting rides", ex);
 			return null;
 		}
 	}
@@ -107,8 +111,8 @@ public class PolDao extends BaseDao<Pol> {
 					.language("en-EN")
 					.await();
 			return trix.rows[0].elements[0].distance.inMeters;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (Exception ex) {
+			logger.error("Error while calculating distance", ex);
 			return 0;
 		}
 	}
@@ -119,8 +123,7 @@ public class PolDao extends BaseDao<Pol> {
 			ride.setEndDate(ride.getPols().get(ride.getPols().size() - 1).getTimestampMillis());
 		}
 
-		ride.setDistance((long) this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1));
-
+		ride.setDistance(this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1));
 		return ride;
 	}
 }

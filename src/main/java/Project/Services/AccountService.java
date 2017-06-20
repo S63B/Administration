@@ -30,6 +30,7 @@ public class AccountService {
 			account = new Account(username, hashedPassword);
 			accountDao.save(account);
 		}
+
 		return account;
 	}
 
