@@ -25,6 +25,9 @@ import { LoginComponent } from './login/login.component';
 import {AuthService} from "./auth.service";
 import {CanActivateAuthGuard} from "./can-active.authguard";
 
+export function createTranslateStaticLoader(http: Http) {
+  return new TranslateStaticLoader(http, '/assets/i18n', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -49,7 +52,7 @@ import {CanActivateAuthGuard} from "./can-active.authguard";
     }),
     TranslateModule.forRoot({
       provide: TranslateLoader,
-      useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+      useFactory: (createTranslateStaticLoader),
       deps: [Http]
     })
   ],
