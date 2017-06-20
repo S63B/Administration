@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { HttpService } from "app/http.service";
 import { RateRegion } from "app/rate-region";
 
-import { API_URL_ADMINISTRATION } from "app/constants";
+import { environment } from "environments/environment";
 
 @Injectable()
 export class RateRegionService {
+  private API_URL_ADMINISTRATION: string = environment.administrationUrl;
 
   constructor(
     private httpService: HttpService
@@ -20,7 +21,7 @@ export class RateRegionService {
    * @memberof RateRegionService
    */
   getAll() {
-    return this.httpService.get(`${API_URL_ADMINISTRATION}/rate`);
+    return this.httpService.get(`${this.API_URL_ADMINISTRATION}/rate`);
   }
 
   /**
@@ -30,7 +31,7 @@ export class RateRegionService {
    */
   create(newRateRegion: RateRegion) {
     const rr = newRateRegion;
-    return this.httpService.post(`${API_URL_ADMINISTRATION}/rate/create?centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
+    return this.httpService.post(`${this.API_URL_ADMINISTRATION}/rate/create?centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
   }
 
   /**
@@ -40,7 +41,7 @@ export class RateRegionService {
    */
   update(updatedRateRegion: RateRegion) {
     const rr = updatedRateRegion;
-    return this.httpService.put(`${API_URL_ADMINISTRATION}/rate/update?rateId=${rr.id}&centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
+    return this.httpService.put(`${this.API_URL_ADMINISTRATION}/rate/update?rateId=${rr.id}&centerLat=${rr.lat}&centerLon=${rr.lng}&radius=${rr.radius}&pricing=${rr.rate}&startDate=${rr.startDate}&endDate=${rr.endDate}`);
   }
 
   /**
@@ -49,7 +50,7 @@ export class RateRegionService {
    * @param rateRegionId 
    */
   delete(rateRegionId: number) {
-    return this.httpService.delete(`${API_URL_ADMINISTRATION}/rate/delete?rateRegionId=${rateRegionId}`);
+    return this.httpService.delete(`${this.API_URL_ADMINISTRATION}/rate/delete?rateRegionId=${rateRegionId}`);
   }
 
 }

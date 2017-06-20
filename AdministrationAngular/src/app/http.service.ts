@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Response, Http } from '@angular/http';
 
-import { API_URL_ADMINISTRATION } from "app/constants";
-
 @Injectable()
 export class HttpService {
 
