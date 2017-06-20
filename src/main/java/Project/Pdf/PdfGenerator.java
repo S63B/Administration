@@ -9,11 +9,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import static Project.Pdf.PdfFonts.*;
  * Created by Nekkyou on 4-4-2017.
  */
 public class PdfGenerator {
+	private final Logger logger = LoggerFactory.getLogger(PdfGenerator.class);
+
 	private PolDao polDao;
 
 	private Document document;
@@ -62,9 +65,10 @@ public class PdfGenerator {
 		userData.put("Auto's", String.valueOf((invoice.getOwner().getOwnedCars().size())));
 
 		document = new Document();
+
 		try
 		{
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream( filename));
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
 			document.open();
 			setMetadata();
 
@@ -74,10 +78,9 @@ public class PdfGenerator {
 			//Close document
 			document.close();
 			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			logger.error("Error while writing document to file", ex);
 		}
-
 
 		return filename;
 	}

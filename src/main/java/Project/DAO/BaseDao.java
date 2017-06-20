@@ -1,5 +1,8 @@
 package Project.DAO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
@@ -7,6 +10,8 @@ import javax.persistence.Persistence;
  * Created by Nekkyou on 9-5-2017.
  */
 public class BaseDao<T> {
+	private final Logger logger = LoggerFactory.getLogger(BaseDao.class);
+
 	protected EntityManager em;
 
 	public BaseDao() {
@@ -19,8 +24,8 @@ public class BaseDao<T> {
 			em.persist(object);
 			em.getTransaction().commit();
 			return true;
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while creating object", ex);
 			return false;
 		}
 	}
@@ -31,8 +36,8 @@ public class BaseDao<T> {
 			em.merge(object);
 			em.getTransaction().commit();
 			return true;
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception ex){
+			logger.error("Error while saving object", ex);
 			return false;
 		}
 	}

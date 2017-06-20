@@ -3,6 +3,8 @@ package Project.Services;
 import Project.DAO.RateDao;
 import com.S63B.domain.Entities.Rate;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @Service
 @Transactional
 public class RateService {
+    private final Logger logger = LoggerFactory.getLogger(RateService.class);
+
     private RateDao rateDao;
 
     @Autowired
@@ -44,7 +48,7 @@ public class RateService {
             rateDao.delete(rateToDelete);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("Error while deleting a rate", ex);
             return false;
         }
     }
