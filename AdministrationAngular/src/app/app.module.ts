@@ -19,6 +19,9 @@ import { RateRegionService } from "app/rate-region.service";
 import { JodatimePipe } from './jodatime.pipe';
 import { HeaderComponent } from './header/header.component';
 import { SearchPipe } from './search.pipe';
+import { RegistrationComponent } from './registration/registration.component';
+import {AccountService} from "./account.service";
+import {routing} from "./app.routing";
 
 @NgModule({
   declarations: [
@@ -26,8 +29,9 @@ import { SearchPipe } from './search.pipe';
     CarownerComponent,
     RateRegionsComponent,
     JodatimePipe,
-    HeaderComponent,
-    SearchPipe
+    SearchPipe,
+    RegistrationComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +53,7 @@ import { SearchPipe } from './search.pipe';
     HttpModule,
     HttpService,
     CarService,
+    AccountService,
     UUIDService,
     RateRegionService
   ],
