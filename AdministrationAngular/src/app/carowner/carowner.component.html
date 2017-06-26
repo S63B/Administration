@@ -52,7 +52,7 @@
 
       <form [formGroup]="addCarForm" (ngSubmit)="addCar($event)">
         <div class="form-group">
-          <label for="carID">Koppel auto met {{ "{ID}" }}</label>
+          <label for="carID">Koppel auto met serienummer</label>
           <input type="number" class="form-control" formControlName="carID" name="carID" required>
         </div>
 
