@@ -31,7 +31,7 @@ export class CarService {
   }
 
   addCarToOwner(ownerId: number, carId: number): Observable<any> {
-    return this.httpService.post(`${this.API_URL_ADMINISTRATION}/${ownerId}/add/${carId}`)
+    return this.httpService.post(`${this.API_URL_ADMINISTRATION}/car/${ownerId}/add/${carId}`)
       .map(response => response.json());
   }
 
