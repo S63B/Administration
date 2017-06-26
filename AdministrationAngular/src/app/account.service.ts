@@ -21,7 +21,7 @@ export class AccountService {
   register(account: Account) {
     //Send request to the administration backend. /owner/create with owner in the body.
     let url = `${this.API_URL_ADMINISTRATION}/account/register?username=${account.username}&password=${account.password}`;
-    return this.httpService.post(url);
+    return this.httpService.nonAuthorizedPost(url);
   }
 
 }
