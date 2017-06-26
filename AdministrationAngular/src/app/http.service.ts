@@ -19,6 +19,11 @@ export class HttpService {
     });
   }
 
+  public nonAuthorizedPost(url, body?, options?) {
+    console.log(url);
+    return this.http.post(url, body, options);
+  }
+
   public post(url, body?) {
     console.log(url);
     return this.http.post(url, body, {
